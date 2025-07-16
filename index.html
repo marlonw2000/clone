@@ -3,30 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="MarlonFotos ofrece fotografía profesional en retratos, paisajes, bodas y parejas, inspirada en la vibrante cultura latinoamericana. Reserva tu sesión o inscríbete en nuestros cursos.">
-    <meta name="keywords" content="fotografía, retratos, paisajes, bodas, parejas, MarlonFotos, Costa Rica, fotografía latinoamericana, cursos de fotografía">
+    <meta name="description" content="MarlonFotos ofrece fotografía profesional en retratos, paisajes, bodas y parejas. Reserva tu sesión o inscríbete en nuestros cursos.">
+    <meta name="keywords" content="fotografía, retratos, paisajes, bodas, parejas, MarlonFotos, Costa Rica, cursos de fotografía">
     <meta name="author" content="MarlonFotos">
     <meta property="og:title" content="MarlonFotos - Fotografía Profesional">
-    <meta property="og:description" content="Capturamos momentos únicos con un toque latino. Explora nuestras galerías y servicios en Costa Rica.">
+    <meta property="og:description" content="Capturamos momentos únicos con arte y técnica profesional. Explora nuestras galerías y servicios.">
     <meta property="og:image" content="https://images.unsplash.com/photo-1516792288125-4a18f1263f86">
     <meta property="og:url" content="https://marlonfotos.com">
     <title>MarlonFotos - Fotografía Profesional</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://img.icons8.com/ios-filled/50/00adb5/camera.png">
     <style>
+        :root {
+            --primary: #3a86ff;
+            --secondary: #8338ec;
+            --accent: #ff006e;
+            --dark: #1a1a2e;
+            --darker: #16213e;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --transition: all 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            --radius: 12px;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            background: #1c2526;
-            color: #fff;
+            background: var(--dark);
+            color: var(--light);
             line-height: 1.8;
             overflow-x: hidden;
+            transition: var(--transition);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--darker);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary);
         }
 
         /* Custom Cursor */
@@ -34,7 +66,7 @@
             cursor: url('https://img.icons8.com/ios/20/ffffff/camera.png'), auto;
         }
 
-        a:hover, button:hover {
+        a:hover, button:hover, .clickable {
             cursor: url('https://img.icons8.com/ios/20/ffffff/camera--v1.png'), pointer;
         }
 
@@ -45,136 +77,127 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #1c2526;
+            background: var(--dark);
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 3000;
-            transition: opacity 0.5s;
+            flex-direction: column;
+            z-index: 9999;
+            transition: opacity 1s ease-out;
         }
 
-        .preloader i {
-            font-size: 60px;
-            color: #e76f51;
-            animation: fadePulse 1.5s infinite ease-in-out;
+        .preloader-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--light);
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
-        @keyframes fadePulse {
-            0% { opacity: 0.5; }
-            50% { opacity: 1; }
-            100% { opacity: 0.5; }
+        .preloader-bar {
+            width: 300px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .preloader-progress {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.5s ease;
         }
 
         /* Navigation */
         nav {
-            background: rgba(0, 0, 0, 0.95);
             position: fixed;
             width: 100%;
-            padding: 15px 0;
+            padding: 1.5rem 0;
             z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+        }
+
+        nav.scrolled {
+            padding: 1rem 0;
+            background: rgba(22, 33, 62, 0.98);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 0.5rem;
+            color: var(--primary);
         }
 
         nav ul {
             list-style: none;
             display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
+            gap: 2rem;
         }
 
         nav ul li a {
-            color: #fff;
+            color: var(--light);
             text-decoration: none;
-            font-family: 'Playfair Display', serif;
-            font-size: 16px;
-            font-weight: 700;
-            padding: 10px;
-            transition: color 0.3s, transform 0.3s;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: var(--transition);
         }
 
         nav ul li a:hover, nav ul li a.active {
-            color: #e76f51;
-            transform: translateY(-2px);
+            color: var(--accent);
+        }
+
+        nav ul li a:hover::after, nav ul li a.active::after {
+            width: 80%;
         }
 
         .hamburger {
             display: none;
-            font-size: 24px;
-            color: #fff;
+            font-size: 1.5rem;
+            color: var(--light);
             cursor: pointer;
-            position: absolute;
-            right: 15px;
-            top: 15px;
-        }
-
-        @media (max-width: 768px) {
-            nav ul {
-                display: none;
-                flex-direction: column;
-                background: #000;
-                position: absolute;
-                top: 60px;
-                left: 0;
-                width: 100%;
-                padding: 15px;
-                text-align: center;
-            }
-
-            nav ul.active {
-                display: flex;
-            }
-
-            .hamburger {
-                display: block;
-            }
-
-            .hero h1 {
-                font-size: 36px;
-            }
-
-            .hero p {
-                font-size: 18px;
-            }
-
-            .section {
-                padding: 50px 10px;
-            }
-
-            .gallery-grid, .portfolio-grid, .services-grid, .pricing-grid, .team-grid, .social-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .gallery-grid img, .portfolio-grid img {
-                height: 150px;
-            }
-
-            .pricing-card, .service-card, .team-member {
-                padding: 15px;
-            }
-
-            .contact form, .courses form, .photo-contest form, .client-gallery form {
-                max-width: 100%;
-            }
-
-            .map {
-                height: 200px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 28px;
-            }
-
-            .hero p {
-                font-size: 16px;
-            }
-
-            .gallery-filters button {
-                padding: 8px 15px;
-                font-size: 14px;
-            }
+            z-index: 1001;
         }
 
         /* Hero Section */
@@ -185,8 +208,18 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: url('https://images.unsplash.com/photo-1516792288125-4a18f1263f86') no-repeat center/cover fixed;
             position: relative;
+            overflow: hidden;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
         }
 
         .hero::after {
@@ -196,1550 +229,2797 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.9));
+            background: linear-gradient(to bottom, rgba(26, 26, 46, 0.8), rgba(22, 33, 62, 0.9));
+            z-index: -1;
         }
 
         .hero-content {
+            max-width: 800px;
+            padding: 0 2rem;
             z-index: 1;
         }
 
         .hero h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 64px;
+            font-size: 4.5rem;
             font-weight: 700;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, var(--light), var(--primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+            opacity: 0;
+            transform: translateY(30px);
         }
 
         .hero p {
-            font-size: 28px;
-            margin-bottom: 30px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            font-size: 1.5rem;
+            margin-bottom: 2.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            opacity: 0;
+            transform: translateY(30px);
         }
 
-        .hero button {
-            padding: 15px 40px;
-            font-family: 'Playfair Display', serif;
-            font-size: 20px;
-            font-weight: 700;
-            background: #e76f51;
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
             border: none;
-            color: #fff;
-            cursor: pointer;
             border-radius: 50px;
-            transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
         }
 
-        .hero button:hover {
-            background: #f4a261;
-            transform: scale(1.1);
-            box-shadow: 0 0 15px rgba(244, 162, 97, 0.5);
+        .btn-primary {
+            background: var(--accent);
+            color: var(--light);
+            box-shadow: 0 10px 20px rgba(255, 0, 110, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #e00063;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 0, 110, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--light);
+            border: 2px solid var(--light);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .scroll-down {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--light);
+            font-size: 1.5rem;
+            animation: bounce 2s infinite;
+            opacity: 0;
+            transition: opacity 1s ease 2s;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) translateX(-50%);
+            }
+            40% {
+                transform: translateY(-20px) translateX(-50%);
+            }
+            60% {
+                transform: translateY(-10px) translateX(-50%);
+            }
         }
 
         /* Section Styles */
         .section {
-            padding: 100px 20px;
+            padding: 8rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-title {
             text-align: center;
-            background: #2e3b3e;
+            margin-bottom: 5rem;
             position: relative;
         }
 
-        .section h2 {
+        .section-title h2 {
             font-family: 'Playfair Display', serif;
-            font-size: 40px;
+            font-size: 3rem;
             font-weight: 700;
-            margin-bottom: 20px;
-            color: #e76f51;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            opacity: 0;
+            transform: translateY(30px);
         }
 
-        .section p {
-            max-width: 900px;
+        .section-title p {
+            max-width: 700px;
             margin: 0 auto;
-            font-size: 18px;
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .section-title .divider {
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            margin: 1.5rem auto;
+            border-radius: 2px;
+            opacity: 0;
+            transform: scaleX(0);
+            transform-origin: center;
         }
 
         /* About Section */
-        .about {
-            background: url('https://images.unsplash.com/photo-1502082553048-f009c37129b9') no-repeat center/cover fixed;
+        .about-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
         }
 
-        .about::after {
+        .about-text h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--light);
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-text {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .about-image {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transform: perspective(1000px) rotateY(15deg);
+            transition: var(--transition);
+        }
+
+        .about-image:hover {
+            transform: perspective(1000px) rotateY(5deg);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: var(--radius);
+        }
+
+        .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .play-btn i {
+            color: var(--light);
+            font-size: 1.5rem;
+            margin-left: 5px;
+        }
+
+        .play-btn:hover {
+            background: var(--accent);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2.5rem 2rem;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .service-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-        }
-
-        .about-content {
-            z-index: 1;
-            position: relative;
-        }
-
-        .about-video {
-            max-width: 800px;
-            margin: 20px auto;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Services Section */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .service-card {
-            background: #1c2526;
-            padding: 20px;
-            border-radius: 10px;
-            transition: transform 0.3s, box-shadow 0.3s;
+            background: linear-gradient(135deg, rgba(58, 134, 255, 0.1), rgba(131, 56, 236, 0.1));
+            z-index: -1;
+            opacity: 0;
+            transition: var(--transition);
         }
 
         .service-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .service-card:hover::before {
+            opacity: 1;
+        }
+
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            color: var(--light);
+            box-shadow: 0 10px 20px rgba(58, 134, 255, 0.3);
         }
 
         .service-card h3 {
             font-family: 'Playfair Display', serif;
-            font-size: 24px;
-            margin-bottom: 10px;
-            color: #f4a261;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+
+        .service-card p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .service-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .service-link i {
+            margin-left: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .service-link:hover {
+            color: var(--accent);
+        }
+
+        .service-link:hover i {
+            transform: translateX(5px);
         }
 
         /* Portfolio Section */
+        .portfolio-filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .filter-btn {
+            padding: 0.7rem 1.5rem;
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--light);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 0, 110, 0.3);
+        }
+
         .portfolio-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        .portfolio-grid img {
+        .portfolio-item {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            transition: var(--transition);
+        }
+
+        .portfolio-item img {
             width: 100%;
-            height: 300px;
+            height: 100%;
             object-fit: cover;
-            border-radius: 10px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            loading: lazy;
+            display: block;
+            transition: var(--transition);
         }
 
-        .portfolio-grid img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Gallery Section */
-        .gallery {
-            background: #1c2526;
-        }
-
-        .gallery-filters {
-            margin-bottom: 30px;
-        }
-
-        .gallery-filters button {
-            padding: 10px 20px;
-            margin: 5px;
-            font-family: 'Playfair Display', serif;
-            font-size: 16px;
-            background: #00adb5;
-            border: none;
-            color: #fff;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background 0.3s, transform 0.3s;
-        }
-
-        .gallery-filters button:hover, .gallery-filters button.active {
-            background: #e76f51;
-            transform: scale(1.05);
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .gallery-grid img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 10px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            cursor: pointer;
-            loading: lazy;
-        }
-
-        .gallery-grid img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Zoom Modal */
-        .modal {
-            display: none;
-            position: fixed;
+        .portfolio-overlay {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 2000;
+            background: linear-gradient(to bottom, rgba(58, 134, 255, 0.8), rgba(131, 56, 236, 0.8));
+            display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            opacity: 0;
+            transition: var(--transition);
+            padding: 2rem;
+            text-align: center;
         }
 
-        .modal img {
-            max-width: 90%;
-            max-height: 80%;
-            border-radius: 10px;
+        .portfolio-overlay h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--light);
+            margin-bottom: 0.5rem;
+            transform: translateY(20px);
+            transition: var(--transition);
         }
 
-        .modal .close, .modal .prev, .modal .next {
-            position: absolute;
-            color: #fff;
-            font-size: 40px;
-            cursor: pointer;
-            transition: color 0.3s, transform 0.3s;
+        .portfolio-overlay p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1.5rem;
+            transform: translateY(20px);
+            transition: var(--transition);
+            transition-delay: 0.1s;
         }
 
-        .modal .close {
-            top: 20px;
-            right: 20px;
+        .portfolio-overlay .btn {
+            transform: translateY(20px);
+            transition: var(--transition);
+            transition-delay: 0.2s;
         }
 
-        .modal .prev {
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
+        .portfolio-item:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow);
         }
 
-        .modal .next {
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .modal .close:hover, .modal .prev:hover, .modal .next:hover {
-            color: #e76f51;
-            transform: scale(1.2);
-        }
-
-        .modal-thumbnails {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-        }
-
-        .modal-thumbnails img {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 5px;
-            cursor: pointer;
-            opacity: 0.6;
-            transition: opacity 0.3s, transform 0.3s;
-        }
-
-        .modal-thumbnails img:hover, .modal-thumbnails img.active {
-            opacity: 1;
+        .portfolio-item:hover img {
             transform: scale(1.1);
         }
 
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+        }
+
+        .portfolio-item:hover .portfolio-overlay h3,
+        .portfolio-item:hover .portfolio-overlay p,
+        .portfolio-item:hover .portfolio-overlay .btn {
+            transform: translateY(0);
+        }
+
         /* Testimonials Section */
-        .testimonials {
-            background: #2e3b3e;
+        .testimonials-slider {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
         }
 
-        .testimonial {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 20px;
-            background: #1c2526;
-            border-radius: 10px;
-            transition: transform 0.3s, box-shadow 0.3s;
+        .testimonial-slide {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: var(--radius);
+            margin: 0 1rem;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+            text-align: center;
         }
 
-        .testimonial:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        .testimonial-slide:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow);
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
-        .testimonial p {
+        .testimonial-quote {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
             font-style: italic;
-            font-size: 16px;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+            position: relative;
         }
 
-        .testimonial h4 {
+        .testimonial-quote::before,
+        .testimonial-quote::after {
+            content: '"';
+            font-size: 3rem;
+            color: var(--primary);
+            opacity: 0.3;
+            position: absolute;
+        }
+
+        .testimonial-quote::before {
+            top: -1.5rem;
+            left: -1rem;
+        }
+
+        .testimonial-quote::after {
+            bottom: -2.5rem;
+            right: -1rem;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 1rem;
+            border: 3px solid var(--primary);
+        }
+
+        .author-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .author-info h4 {
             font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            margin-top: 10px;
-            color: #f4a261;
+            font-size: 1.2rem;
+            color: var(--light);
+            margin-bottom: 0.3rem;
+        }
+
+        .author-info p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .testimonial-rating {
+            color: var(--accent);
+            margin-top: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .slick-dots {
+            bottom: -50px;
+        }
+
+        .slick-dots li button:before {
+            color: var(--light);
+            opacity: 0.5;
+            font-size: 10px;
+        }
+
+        .slick-dots li.slick-active button:before {
+            color: var(--accent);
+            opacity: 1;
         }
 
         /* Pricing Section */
         .pricing-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
             max-width: 1200px;
             margin: 0 auto;
         }
 
         .pricing-card {
-            background: #1c2526;
-            padding: 20px;
-            border-radius: 10px;
-            transition: transform 0.3s, box-shadow 0.3s;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2.5rem 2rem;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
         }
 
-        .pricing-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        .pricing-card.popular {
+            border: 1px solid var(--accent);
+            transform: translateY(-20px);
+        }
+
+        .pricing-card.popular::before {
+            content: 'Popular';
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: var(--accent);
+            color: var(--light);
+            padding: 0.3rem 3rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transform: rotate(45deg);
+        }
+
+        .pricing-card-header {
+            text-align: center;
+            margin-bottom: 2rem;
         }
 
         .pricing-card h3 {
             font-family: 'Playfair Display', serif;
-            font-size: 24px;
-            margin-bottom: 10px;
-            color: #f4a261;
+            font-size: 1.5rem;
+            color: var(--light);
+            margin-bottom: 1rem;
         }
 
-        .pricing-card button {
-            padding: 10px 20px;
-            font-family: 'Playfair Display', serif;
-            font-size: 16px;
-            background: #e76f51;
-            border: none;
-            color: #fff;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background 0.3s, transform 0.3s;
+        .pricing-price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
         }
 
-        .pricing-card button:hover {
-            background: #f4a261;
-            transform: scale(1.05);
+        .pricing-price span {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 400;
+        }
+
+        .pricing-features {
+            margin-bottom: 2rem;
+        }
+
+        .pricing-features li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .pricing-features li i {
+            color: var(--primary);
+            margin-right: 0.7rem;
+            font-size: 0.8rem;
+        }
+
+        .pricing-card-footer {
+            text-align: center;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .pricing-card.popular:hover {
+            transform: translateY(-30px);
         }
 
         /* Team Section */
         .team-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            gap: 2rem;
             max-width: 1200px;
             margin: 0 auto;
         }
 
         .team-member {
-            background: #1c2526;
-            padding: 20px;
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: var(--radius);
             text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-member::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: var(--transition);
         }
 
         .team-member:hover {
             transform: translateY(-10px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow);
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
-        .team-member img {
+        .team-member:hover::before {
+            opacity: 1;
+        }
+
+        .member-image {
             width: 150px;
             height: 150px;
-            object-fit: cover;
             border-radius: 50%;
-            margin-bottom: 10px;
-            loading: lazy;
+            margin: 0 auto 1.5rem;
+            overflow: hidden;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+        }
+
+        .team-member:hover .member-image {
+            border-color: var(--primary);
+        }
+
+        .member-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .team-member:hover .member-image img {
+            transform: scale(1.1);
         }
 
         .team-member h3 {
             font-family: 'Playfair Display', serif;
-            font-size: 20px;
-            color: #f4a261;
+            font-size: 1.3rem;
+            color: var(--light);
+            margin-bottom: 0.5rem;
         }
 
-        /* Courses Section */
-        .courses {
-            background: url('https://images.unsplash.com/photo-1523567830206-9673374e7f07') no-repeat center/cover fixed;
+        .team-member p {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
         }
 
-        .courses::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-        }
-
-        .courses-content {
-            z-index: 1;
-            position: relative;
-        }
-
-        .courses img {
-            width: 100%;
-            max-width: 600px;
-            height: auto;
-            border-radius: 10px;
-            margin: 20px auto;
-            loading: lazy;
-        }
-
-        .courses form {
-            max-width: 600px;
-            margin: 0 auto;
+        .member-social {
             display: flex;
-            flex-direction: column;
-            gap: 20px;
+            justify-content: center;
+            gap: 1rem;
         }
 
-        .courses input, .courses textarea {
-            padding: 15px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            background: #fff;
-            color: #000;
-        }
-
-        .courses button {
-            padding: 15px;
-            font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            background: #e76f51;
-            border: none;
-            color: #fff;
-            cursor: pointer;
-            border-radius: 50px;
-            transition: background 0.3s, transform 0.3s;
-        }
-
-        .courses button:hover {
-            background: #f4a261;
-            transform: scale(1.05);
-        }
-
-        /* Client Gallery Section */
-        .client-gallery {
-            background: #2e3b3e;
-        }
-
-        .client-gallery form {
-            max-width: 600px;
-            margin: 0 auto;
+        .member-social a {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
             display: flex;
-            flex-direction: column;
-            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+            transition: var(--transition);
         }
 
-        .client-gallery input {
-            padding: 15px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            background: #fff;
-            color: #000;
-        }
-
-        .client-gallery button {
-            padding: 15px;
-            font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            background: #e76f51;
-            border: none;
-            color: #fff;
-            cursor: pointer;
-            border-radius: 50px;
-            transition: background 0.3s, transform 0.3s;
-        }
-
-        .client-gallery button:hover {
-            background: #f4a261;
-            transform: scale(1.05);
+        .member-social a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
         }
 
         /* Blog Section */
-        .blog {
-            background: #1c2526;
-        }
-
-        .blog-post {
-            max-width: 900px;
-            margin: 40px auto;
-            text-align: left;
-            background: #2e3b3e;
-            padding: 30px;
-            border-radius: 10px;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .blog-post:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .blog-post h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            margin-bottom: 15px;
-            color: #f4a261;
-        }
-
-        .blog-post p {
-            font-size: 16px;
-            margin-bottom: 15px;
-        }
-
-        /* FAQ Section */
-        .faq {
-            background: #2e3b3e;
-        }
-
-        .faq-item {
-            max-width: 900px;
-            margin: 20px auto;
-            text-align: left;
-            padding: 15px;
-            background: #1c2526;
-            border-radius: 10px;
-            transition: transform 0.3s;
-        }
-
-        .faq-item:hover {
-            transform: translateY(-5px);
-        }
-
-        .faq-item h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 22px;
-            margin-bottom: 10px;
-            color: #f4a261;
-        }
-
-        /* Social Feed Section */
-        .social-feed {
-            background: #1c2526;
-        }
-
-        .social-grid {
+        .blog-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        .social-grid img {
+        .blog-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .blog-image {
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .blog-image img {
             width: 100%;
-            height: 200px;
+            height: 100%;
             object-fit: cover;
-            border-radius: 5px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            loading: lazy;
+            transition: var(--transition);
         }
 
-        .social-grid img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        .blog-card:hover .blog-image img {
+            transform: scale(1.1);
         }
 
-        /* Newsletter Archive Section */
-        .newsletter-archive {
-            background: #2e3b3e;
-        }
-
-        .newsletter-item {
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 20px;
-            background: #1c2526;
-            border-radius: 10px;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .newsletter-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .newsletter-item h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 22px;
-            color: #f4a261;
-        }
-
-        /* Photo Contest Section */
-        .photo-contest {
-            background: #1c2526;
-        }
-
-        .photo-contest form {
-            max-width: 600px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .photo-contest input, .photo-contest textarea {
-            padding: 15px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            background: #fff;
-            color: #000;
-        }
-
-        .photo-contest button {
-            padding: 15px;
-            font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            background: #e76f51;
-            border: none;
-            color: #fff;
-            cursor: pointer;
+        .blog-date {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: var(--accent);
+            color: var(--light);
+            padding: 0.3rem 1rem;
             border-radius: 50px;
-            transition: background 0.3s, transform 0.3s;
+            font-size: 0.8rem;
+            font-weight: 600;
         }
 
-        .photo-contest button:hover {
-            background: #f4a261;
-            transform: scale(1.05);
+        .blog-content {
+            padding: 2rem;
+        }
+
+        .blog-category {
+            display: inline-block;
+            background: rgba(58, 134, 255, 0.2);
+            color: var(--primary);
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .blog-content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--light);
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .blog-content p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .blog-author {
+            display: flex;
+            align-items: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .author-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 1rem;
+        }
+
+        .author-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .author-details h4 {
+            font-size: 0.9rem;
+            color: var(--light);
+            margin-bottom: 0.2rem;
+        }
+
+        .author-details p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+            margin-bottom: 0;
         }
 
         /* Contact Section */
-        .contact {
-            background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb') no-repeat center/cover fixed;
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
         }
 
-        .contact::after {
+        .contact-info {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: var(--radius);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .contact-info h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--light);
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .contact-info h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 3px;
+        }
+
+        .info-item {
+            display: flex;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            color: var(--light);
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .info-content h4 {
+            font-size: 1.1rem;
+            color: var(--light);
+            margin-bottom: 0.5rem;
+        }
+
+        .info-content p, .info-content a {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            line-height: 1.6;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .info-content a:hover {
+            color: var(--primary);
+        }
+
+        .contact-social {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .contact-social a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+            transition: var(--transition);
+        }
+
+        .contact-social a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .contact-form {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            border-radius: var(--radius);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius);
+            color: var(--light);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border: none;
+            border-radius: var(--radius);
+            color: var(--light);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .form-submit:hover {
+            background: linear-gradient(to right, #2a75f5, #7229e8);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(58, 134, 255, 0.3);
+        }
+
+        .contact-map {
+            height: 300px;
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-top: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .contact-map iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Newsletter Section */
+        .newsletter {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .newsletter::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: url('https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center/cover;
+            opacity: 0.1;
+            z-index: -1;
         }
 
-        .contact-content {
-            z-index: 1;
+        .newsletter h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--light);
+            margin-bottom: 1.5rem;
+        }
+
+        .newsletter p {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+        }
+
+        .newsletter-form {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            background: var(--light);
+            border-radius: 50px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .newsletter-btn {
+            padding: 1rem 2rem;
+            background: var(--accent);
+            color: var(--light);
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .newsletter-btn:hover {
+            background: #e00063;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--darker);
+            padding: 5rem 0 2rem;
             position: relative;
         }
 
-        .contact form {
-            max-width: 600px;
+        .footer-container {
+            max-width: 1200px;
             margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
         }
 
-        .contact input, .contact textarea {
-            padding: 15px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            background: #fff;
-            color: #000;
-        }
-
-        .contact button {
-            padding: 15px;
+        .footer-col h3 {
             font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            background: #e76f51;
-            border: none;
-            color: #fff;
-            cursor: pointer;
-            border-radius: 50px;
-            transition: background 0.3s, transform 0.3s;
+            font-size: 1.5rem;
+            color: var(--light);
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 1rem;
         }
 
-        .contact button:hover {
-            background: #f4a261;
-            transform: scale(1.05);
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--accent);
         }
 
-        .map {
-            max-width: 600px;
-            margin: 20px auto;
-            border-radius: 10px;
-            overflow: hidden;
+        .footer-col p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
         }
 
-        /* WhatsApp Styling */
-        .whatsapp {
-            color: #fff;
-            font-size: 32px;
-            margin-left: 10px;
-            transition: color 0.3s;
+        .footer-links li {
+            margin-bottom: 1rem;
         }
 
-        .whatsapp:hover {
-            color: #25D366;
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
         }
 
-        .whatsapp-float {
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            background: #25D366;
-            padding: 15px;
+        .footer-links a:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .footer-social a {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            z-index: 1000;
-            transition: background 0.3s, transform 0.3s;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+            transition: var(--transition);
         }
 
-        .whatsapp-float a {
-            color: #fff;
-            font-size: 32px;
+        .footer-social a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
         }
 
-        .whatsapp-float:hover {
-            background: #1a9c4d;
-            transform: scale(1.1);
+        .footer-bottom {
+            text-align: center;
+            padding-top: 3rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Theme Toggle */
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 80px;
-            background: #f4a261;
-            padding: 10px;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 1000;
-            transition: background 0.3s, transform 0.3s;
+        .footer-bottom p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
         }
 
-        .theme-toggle i {
-            font-size: 20px;
-            color: #fff;
+        .footer-bottom a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
         }
 
-        .theme-toggle:hover {
-            background: #e76f51;
-            transform: scale(1.1);
-        }
-
-        body.light-mode {
-            background: #f5f5f5;
-            color: #333;
-        }
-
-        body.light-mode .section, body.light-mode .testimonial, body.light-mode .pricing-card, body.light-mode .service-card, body.light-mode .team-member, body.light-mode .blog-post, body.light-mode .newsletter-item, body.light-mode .faq-item {
-            background: #fff;
-            color: #333;
-        }
-
-        body.light-mode nav, body.light-mode footer {
-            background: #333;
-        }
-
-        body.light-mode .whatsapp {
-            color: #25D366;
-        }
-
-        body.light-mode .whatsapp-float {
-            background: #25D366;
-        }
-
-        body.light-mode .whatsapp-float:hover {
-            background: #1a9c4d;
-        }
-
-        body.light-mode .hero::after {
-            background: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.9));
+        .footer-bottom a:hover {
+            color: var(--accent);
         }
 
         /* Back to Top Button */
         .back-to-top {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #e76f51;
-            color: #fff;
-            padding: 10px 15px;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--accent);
+            color: var(--light);
             border-radius: 50%;
-            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
             cursor: pointer;
-            display: none;
-            z-index: 1000;
-            transition: background 0.3s, transform 0.3s;
+            transition: var(--transition);
+            opacity: 0;
+            visibility: hidden;
+            z-index: 999;
+            box-shadow: 0 5px 15px rgba(255, 0, 110, 0.3);
+        }
+
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
         }
 
         .back-to-top:hover {
-            background: #f4a261;
-            transform: scale(1.05);
+            background: #e00063;
+            transform: translateY(-5px);
         }
 
-        /* Footer */
-        footer {
-            padding: 40px 20px;
-            text-align: center;
-            background: #000;
+        /* WhatsApp Floating Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            color: var(--light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 999;
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
         }
 
-        footer p {
-            font-size: 14px;
+        .whatsapp-float:hover {
+            background: #1a9c4d;
+            transform: translateY(-5px);
         }
 
-        footer a {
-            color: #e76f51;
-            text-decoration: none;
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
         }
 
-        footer a:hover {
-            text-decoration: underline;
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 80vh;
+            display: block;
+            border-radius: var(--radius);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: var(--light);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--accent);
+        }
+
+        .modal-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 2rem;
+        }
+
+        .modal-nav button {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--light);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .modal-nav button:hover {
+            background: var(--accent);
+        }
+
+        .modal-thumbnails {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .modal-thumbnail {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            overflow: hidden;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: var(--transition);
+        }
+
+        .modal-thumbnail.active, .modal-thumbnail:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .modal-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .pulse {
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .about-image {
+                order: -1;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            nav ul {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                height: 100vh;
+                background: var(--darker);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: var(--transition);
+                z-index: 1000;
+            }
+
+            nav ul.active {
+                right: 0;
+            }
+
+            nav ul li a {
+                font-size: 1.2rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .section-title h2 {
+                font-size: 2.2rem;
+            }
+
+            .section-title p {
+                font-size: 1rem;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .footer-col {
+                text-align: center;
+            }
+
+            .footer-col h3::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .footer-social {
+                justify-content: center;
+            }
+
+            .footer-links a:hover {
+                transform: none;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section {
+                padding: 5rem 1rem;
+            }
+
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+                border-radius: var(--radius);
+            }
+
+            .newsletter-input, .newsletter-btn {
+                border-radius: 0;
+            }
+
+            .newsletter-btn {
+                border-bottom-left-radius: var(--radius);
+                border-bottom-right-radius: var(--radius);
+            }
         }
     </style>
 </head>
 <body>
     <!-- Preloader -->
     <div class="preloader" id="preloader">
-        <i class="fas fa-camera"></i>
-    </div>
-
-    <!-- Theme Toggle -->
-    <div class="theme-toggle" aria-label="Cambiar tema">
-        <i class="fas fa-moon"></i>
+        <div class="preloader-logo">MarlonFotos</div>
+        <div class="preloader-bar">
+            <div class="preloader-progress"></div>
+        </div>
     </div>
 
     <!-- Navigation -->
-    <nav role="navigation">
-        <div class="hamburger" aria-label="Abrir menú"><i class="fas fa-bars"></i></div>
-        <ul>
-            <li><a href="#home">Inicio</a></li>
-            <li><a href="#about">Acerca</a></li>
-            <li><a href="#services">Servicios</a></li>
-            <li><a href="#portfolio">Portafolio</a></li>
-            <li><a href="#gallery">Galerías</a></li>
-            <li><a href="#testimonials">Testimonios</a></li>
-            <li><a href="#pricing">Precios</a></li>
-            <li><a href="#team">Equipo</a></li>
-            <li><a href="#courses">Cursos</a></li>
-            <li><a href="#client-gallery">Galería de Clientes</a></li>
-            <li><a href="#blog">Blog</a></li>
-            <li><a href="#faq">FAQ</a></li>
-            <li><a href="#social">Redes</a></li>
-            <li><a href="#newsletter">Boletín</a></li>
-            <li><a href="#contest">Concurso</a></li>
-            <li><a href="#contact">Contacto</a></li>
-            <li><a href="#events">Eventos</a></li>
-            <li><a href="#tutorials">Tutoriales</a></li>
-            <li><a href="#awards">Premios</a></li>
-        </ul>
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo"><i class="fas fa-camera"></i> MarlonFotos</a>
+            <div class="hamburger" id="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul id="nav-menu">
+                <li><a href="#home" class="nav-link active">Inicio</a></li>
+                <li><a href="#about" class="nav-link">Sobre mí</a></li>
+                <li><a href="#services" class="nav-link">Servicios</a></li>
+                <li><a href="#portfolio" class="nav-link">Portafolio</a></li>
+                <li><a href="#testimonials" class="nav-link">Testimonios</a></li>
+                <li><a href="#pricing" class="nav-link">Precios</a></li>
+                <li><a href="#blog" class="nav-link">Blog</a></li>
+                <li><a href="#contact" class="nav-link">Contacto</a></li>
+            </ul>
+        </div>
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="hero" role="banner">
+    <section id="home" class="hero">
+        <video autoplay muted loop class="hero-video">
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-woman-taking-a-photo-of-the-mountains-4926-large.mp4" type="video/mp4">
+        </video>
         <div class="hero-content">
-            <h1>MarlonFotos</h1>
-            <p>Capturamos la vibrante esencia de Latinoamérica</p>
-            <button onclick="window.location.href='#about'">Descubre Nuestra Pasión</button>
+            <h1>Capturando Momentos, Creando Arte</h1>
+            <p>Fotografía profesional que cuenta historias a través de imágenes impactantes</p>
+            <div class="hero-buttons">
+                <a href="#portfolio" class="btn btn-primary">Ver Portafolio</a>
+                <a href="#contact" class="btn btn-secondary">Contactar</a>
+            </div>
         </div>
+        <a href="#about" class="scroll-down"><i class="fas fa-chevron-down"></i></a>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="section about" role="region" aria-label="Acerca de MarlonFotos">
+    <section id="about" class="section">
+        <div class="section-title">
+            <h2>Sobre Mí</h2>
+            <p>Conoce al artista detrás de la lente y descubre mi pasión por capturar momentos únicos</p>
+            <div class="divider"></div>
+        </div>
         <div class="about-content">
-            <h2>Sobre MarlonFotos</h2>
-            <p>Mi nombre es Marlon, y mi amor por la fotografía nació en las calles llenas de vida de San José, Costa Rica. Desde pequeño, me fascinaban los colores del mercado, los rostros de los vendedores y las puestas de sol en la costa del Pacífico. Cada imagen que capturo es un homenaje a la rica cultura latinoamericana, desde los ritmos de la salsa hasta la calidez de nuestras comunidades. Con 15 años de experiencia, he transformado mi pasión en un arte que combina técnica precisa con la espontaneidad de nuestra gente.</p>
-            <p>En MarlonFotos, no solo tomamos fotos; contamos historias. Ya sea un retrato que captura el alma, un paisaje que respira la majestuosidad de nuestra tierra, o una boda llena de amor y tradición, nuestro objetivo es crear imágenes que resuenen con el corazón latino. Únete a nosotros para celebrar la belleza de nuestra cultura a través de la lente.</p>
-            <video class="about-video" controls poster="https://images.unsplash.com/photo-1516792288125-4a18f1263f86">
-                <source src="https://assets.mixkit.co/videos/preview/mixkit-photographer-capturing-images-in-nature-4266-large.mp4" type="video/mp4">
-                Tu navegador no soporta videos.
-            </video>
-            <p>Además, ofrecemos talleres en vivo donde comparto mis técnicas favoritas, desde la fotografía callejera hasta la edición avanzada en Photoshop. Mi viaje ha sido inspirado por los grandes maestros de la fotografía latinoamericana, como Graciela Iturbide, cuyos retratos me enseñaron a buscar la profundidad emocional en cada disparo.</p>
+            <div class="about-text">
+                <h3>Hola, soy Marlon Vargas</h3>
+                <p>Con más de 15 años de experiencia en el mundo de la fotografía, he tenido el privilegio de capturar momentos especiales para cientos de clientes satisfechos. Mi enfoque combina técnica profesional con una sensibilidad artística única.</p>
+                <p>Cada sesión fotográfica es una oportunidad para crear algo extraordinario. Ya sea un retrato íntimo, un paisaje impresionante o el día más importante de tu vida, me comprometo a entregar imágenes que superen tus expectativas.</p>
+                <p>Mi filosofía se basa en la conexión humana y la búsqueda de la belleza en lo cotidiano. Creo que las mejores fotos son aquellas que cuentan una historia y evocan emociones genuinas.</p>
+                <div class="about-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">15+</div>
+                        <div class="stat-text">Años de Experiencia</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-text">Clientes Satisfechos</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">10K+</div>
+                        <div class="stat-text">Fotos Capturadas</div>
+                    </div>
+                </div>
+            </div>
+            <div class="about-image floating">
+                <img src="https://images.unsplash.com/photo-1516726817505-f5ed825624d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Marlon Vargas fotógrafo" loading="lazy">
+                <div class="play-btn pulse">
+                    <i class="fas fa-play"></i>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Services Section -->
-    <section id="services" class="section services" role="region" aria-label="Servicios de Fotografía">
-        <h2>Nuestros Servicios</h2>
-        <p>Ofrecemos una amplia gama de servicios fotográficos diseñados para capturar la esencia de cada momento latinoamericano.</p>
+    <section id="services" class="section">
+        <div class="section-title">
+            <h2>Mis Servicios</h2>
+            <p>Ofrezco una variedad de servicios fotográficos profesionales adaptados a tus necesidades</p>
+            <div class="divider"></div>
+        </div>
         <div class="services-grid">
             <div class="service-card">
-                <h3>Retratos</h3>
-                <p>Sesiones personalizadas que destacan tu personalidad única, perfectas para familias, profesionales o artistas latinos.</p>
+                <div class="service-icon">
+                    <i class="fas fa-portrait"></i>
+                </div>
+                <h3>Retratos Profesionales</h3>
+                <p>Sesiones personalizadas que capturan tu esencia y personalidad, perfectas para perfiles profesionales, redes sociales o recuerdos familiares.</p>
+                <a href="#contact" class="service-link">Saber más <i class="fas fa-arrow-right"></i></a>
             </div>
             <div class="service-card">
-                <h3>Bodas</h3>
-                <p>Cobertura completa de tu día especial, capturando cada emoción con un estilo fotoperiodístico y elegante.</p>
+                <div class="service-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3>Fotografía de Bodas</h3>
+                <p>Cobertura completa de tu día especial, capturando cada momento emotivo y detalle significativo con estilo fotoperiodístico y artístico.</p>
+                <a href="#contact" class="service-link">Saber más <i class="fas fa-arrow-right"></i></a>
             </div>
             <div class="service-card">
-                <h3>Parejas</h3>
-                <p>Sesiones románticas en locaciones naturales, diseñadas para reflejar el amor y la conexión entre parejas latinas.</p>
+                <div class="service-icon">
+                    <i class="fas fa-mountain"></i>
+                </div>
+                <h3>Fotografía de Paisajes</h3>
+                <p>Impresionantes imágenes de naturaleza y entornos urbanos que capturan la belleza y atmósfera única de cada lugar.</p>
+                <a href="#contact" class="service-link">Saber más <i class="fas fa-arrow-right"></i></a>
             </div>
             <div class="service-card">
-                <h3>Paisajes</h3>
-                <p>Fotografías de la belleza natural de Latinoamérica, desde selvas tropicales hasta volcanes majestuosos.</p>
+                <div class="service-icon">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <h3>Fotografía Comercial</h3>
+                <p>Imágenes profesionales para negocios, productos y marcas que destacan tus ofertas y refuerzan tu identidad visual.</p>
+                <a href="#contact" class="service-link">Saber más <i class="fas fa-arrow-right"></i></a>
             </div>
             <div class="service-card">
-                <h3>Eventos</h3>
-                <p>Capturamos la energía de festivales, conciertos y celebraciones con un enfoque dinámico y cultural.</p>
+                <div class="service-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <h3>Fotografía de Eventos</h3>
+                <p>Cobertura profesional de conferencias, fiestas, conciertos y otros eventos especiales, capturando la energía y momentos clave.</p>
+                <a href="#contact" class="service-link">Saber más <i class="fas fa-arrow-right"></i></a>
             </div>
             <div class="service-card">
-                <h3>Comercial</h3>
-                <p>Fotografía profesional para marcas y negocios que deseen resaltar su identidad con un toque latino.</p>
-            </div>
-            <div class="service-card">
-                <h3>Documental</h3>
-                <p>Proyectos que narran la vida y tradiciones de comunidades latinas con un enfoque auténtico.</p>
+                <div class="service-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3>Talleres de Fotografía</h3>
+                <p>Aprende técnicas profesionales de fotografía y edición en mis talleres prácticos diseñados para todos los niveles.</p>
+                <a href="#contact" class="service-link">Saber más <i class="fas fa-arrow-right"></i></a>
             </div>
         </div>
     </section>
 
     <!-- Portfolio Section -->
-    <section id="portfolio" class="section portfolio" role="region" aria-label="Portafolio">
-        <h2>Nuestro Portafolio</h2>
-        <p>Una selección curada que refleja la diversidad y pasión de nuestro trabajo en la cultura latinoamericana.</p>
+    <section id="portfolio" class="section">
+        <div class="section-title">
+            <h2>Mi Portafolio</h2>
+            <p>Una selección de mis trabajos más recientes y representativos</p>
+            <div class="divider"></div>
+        </div>
+        <div class="portfolio-filters">
+            <button class="filter-btn active" data-filter="all">Todo</button>
+            <button class="filter-btn" data-filter="retratos">Retratos</button>
+            <button class="filter-btn" data-filter="bodas">Bodas</button>
+            <button class="filter-btn" data-filter="paisajes">Paisajes</button>
+            <button class="filter-btn" data-filter="comercial">Comercial</button>
+            <button class="filter-btn" data-filter="eventos">Eventos</button>
+        </div>
         <div class="portfolio-grid">
-            <img src="https://images.unsplash.com/photo-1516792288125-4a18f1263f86" alt="Mujer latina sonriendo en un mercado" loading="lazy">
-            <img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9" alt="Selva tropical costarricense" loading="lazy">
-            <img src="https://images.unsplash.com/photo-1530047136935-7aadea69f43c" alt="Novios latinos en una boda tradicional" loading="lazy">
-            <img src="https://images.unsplash.com/photo-1511216113906-8f57e6e99b33" alt="Pareja latina en un atardecer romántico" loading="lazy">
-            <img src="https://images.unsplash.com/photo-1509233725247-49e657c61113" alt="Festival cultural en Costa Rica" loading="lazy">
-            <img src="https://images.unsplash.com/photo-1516727003369-1c4b3a8c6ebb" alt="Mujer mulata en un retrato artístico" loading="lazy">
-            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="Volcán Arenal al amanecer" loading="lazy">
-            <img src="https://images.unsplash.com/photo-1519748771451-a94c5b4328a3" alt="Pareja bailando salsa" loading="lazy">
-            <img src="https://images.unsplash.com/photo-1511593358241-7ddb3a6a3b6c" alt="Montaña con niebla" loading="lazy">
-            <img src="https://images.unsplash.com/photo-1505840717430-8829f6c0e0e2" alt="Playa caribeña" loading="lazy">
-        </div>
-    </section>
-
-    <!-- Gallery Sections -->
-    <section id="gallery" class="section gallery" role="region" aria-label="Galerías de Fotografía">
-        <h2>Galerías</h2>
-        <div class="gallery-filters">
-            <button data-filter="all" class="active">Todos</button>
-            <button data-filter="retratos">Retratos</button>
-            <button data-filter="paisajes">Paisajes</button>
-            <button data-filter="bodas">Bodas</button>
-            <button data-filter="parejas">Parejas</button>
-            <button data-filter="eventos">Eventos</button>
-        </div>
-        <div class="gallery-grid" id="gallery-grid">
             <!-- Retratos -->
-            <img class="retratos" src="https://i.ibb.co/Lh1CW0Wz/2025-07-15-06-30-42.jpg" alt="Retrato profesional" loading="lazy">
-            <img class="retratos" src="https://i.ibb.co/BVF7S6k1/2025-07-15-06-30-32.jpg" alt="Retrato de estudio" loading="lazy">
-            <img class="retratos" src="https://i.ibb.co/0yY1CPmF/2025-07-15-06-32-43.jpg" alt="Retrato artístico" loading="lazy">
-            <img class="retratos" src="https://i.ibb.co/Mk143wfM/Screenshot-20250715-183314-com-flickr-android-Lightbox2-Activity.jpg" alt="Retrato en exteriores" loading="lazy">
-            <img class="retratos" src="https://i.ibb.co/7dc2pzwz/Screenshot-20250715-183510-com-flickr-android-Lightbox2-Activity.jpg" alt="Retrato con luz natural" loading="lazy">
-            <img class="retratos" src="https://i.ibb.co/3yQTfLmp/Screenshot-20250715-183716-com-flickr-android-Lightbox2-Activity.jpg" alt="Retrato creativo" loading="lazy">
-            <img class="retratos" src="https://i.ibb.co/spWH8LdD/Screenshot-20250715-183551-com-flickr-android-Lightbox2-Activity.jpg" alt="Retrato profesional" loading="lazy">
-            <img class="retratos" src="https://i.ibb.co/rKNS04pm/Beauty-Plus-20250713190558550-save.jpg" alt="Retrato de estudio" loading="lazy">
-            <img class="retratos" src="https://i.ibb.co/hF3zpb8F/FB-IMG-1752451865584.jpg" alt="Retrato artístico" loading="lazy">
-            <img class="retratos" src="https://i.ibb.co/kgk19Z4H/Beauty-Plus-20250620151227771-save.jpg" alt="Retrato en exteriores" loading="lazy">
-            <img class="retratos" src="https://i.ibb.co/mCyMY8tB/FB-IMG-1752452698442.jpg" alt="Retrato con luz natural" loading="lazy">
-            <img class="retratos" src="https://i.ibb.co/QjvYPqF6/FB-IMG-1752452789729.jpg" alt="Retrato creativo" loading="lazy">
-            <img class="retratos" src="https://i.ibb.co/gbq51rgq/FB-IMG-1752452804003.jpg" alt="Retrato profesional" loading="lazy">
-            <img class="retratos" src="https://i.ibb.co/vCwhftyV/FB-IMG-1752452828682.jpg" alt="Retrato de estudio" loading="lazy">
-            <img class="retratos" src="https://i.ibb.co/3X7HmMv/FB-IMG-1752452846370.jpg" alt="Retrato artístico" loading="lazy">
-            <img class="retratos" src="https://i.ibb.co/N2VsxvvT/DSC-2835.jpg" alt="Retrato en exteriores" loading="lazy">
-            <img class="retratos" src="https://i.ibb.co/qLLVsCsD/DSC-2929.jpg" alt="Retrato con luz natural" loading="lazy">
-            <img class="retratos" src="https://i.ibb.co/HDNJbK6S/DSC-4780.jpg" alt="Retrato creativo" loading="lazy">
-            <img class="retratos" src="https://i.ibb.co/tT9Sw7f1/DSC-4964-Enhanced-NR.jpg" alt="Retrato profesional" loading="lazy">
-            <img class="retratos" src="https://i.ibb.co/p606pRnK/DSC-4739.jpg" alt="Retrato de estudio" loading="lazy">
-            
-            <!-- Original Retratos -->
-            <img class="retratos" src="https://images.unsplash.com/photo-1516792288125-4a18f1263f86" alt="Mujer latina sonriendo en un mercado" loading="lazy">
-            <img class="retratos" src="https://images.unsplash.com/photo-1516727003369-1c4b3a8c6ebb" alt="Mujer mulata en un retrato artístico" loading="lazy">
-            <img class="retratos" src="https://images.unsplash.com/photo-1508962914676-134910e7d73c" alt="Hombre latino en un retrato urbano" loading="lazy">
-            <img class="retratos" src="https://images.unsplash.com/photo-1516627145497-ae6968895b74" alt="Mujer latina con sombrero tradicional" loading="lazy">
-            <img class="retratos" src="https://images.unsplash.com/photo-1508962914676-134910e7d73c" alt="Hombre mulato en un retrato al aire libre" loading="lazy">
-            <img class="retratos" src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263" alt="Mujer latina joven en un retrato natural" loading="lazy">
-            <img class="retratos" src="https://images.unsplash.com/photo-1516720811804-18fded84d127" alt="Hombre latino en un retrato en blanco y negro" loading="lazy">
-            <img class="retratos" src="https://images.unsplash.com/photo-1517026575980-3e00130be3bc" alt="Mujer mulata en un retrato vibrante" loading="lazy">
-            <img class="retratos" src="https://images.unsplash.com/photo-1501555088652-021faa106b9b" alt="Niño latino en un retrato alegre" loading="lazy">
-            <img class="retratos" src="https://images.unsplash.com/photo-1519741497674-411a6ef6199f" alt="Anciano latino con historia" loading="lazy">
-            
-            <!-- Paisajes -->
-            <img class="paisajes" src="https://images.unsplash.com/photo-1502082553048-f009c37129b9" alt="Selva tropical costarricense" loading="lazy">
-            <img class="paisajes" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="Volcán Arenal al amanecer" loading="lazy">
-            <img class="paisajes" src="https://images.unsplash.com/photo-1516483638261-f43db1d90f03" alt="Playa caribeña en Costa Rica" loading="lazy">
-            <img class="paisajes" src="https://images.unsplash.com/photo-1512438248243-83b6f823a7d0" alt="Cascada en la selva" loading="lazy">
-            <img class="paisajes" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" alt="Atardecer en la costa del Pacífico" loading="lazy">
-            <img class="paisajes" src="https://images.unsplash.com/photo-1511593358241-7ddb3a6a3b6c" alt="Montaña con niebla en Costa Rica" loading="lazy">
-            <img class="paisajes" src="https://images.unsplash.com/photo-1509233725247-49e657c61113" alt="Río en la selva tropical" loading="lazy">
-            <img class="paisajes" src="https://images.unsplash.com/photo-1516116216624-53e697fedbea" alt="Cielo estrellado sobre un volcán" loading="lazy">
-            <img class="paisajes" src="https://images.unsplash.com/photo-1518894781321-630e638d0742" alt="Lago volcánico al atardecer" loading="lazy">
-            <img class="paisajes" src="https://images.unsplash.com/photo-1505840717430-8829f6c0e0e2" alt="Reserva natural con fauna" loading="lazy">
+            <div class="portfolio-item" data-category="retratos">
+                <img src="https://images.unsplash.com/photo-1516726817505-f5ed825624d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Retrato profesional" loading="lazy">
+                <div class="portfolio-overlay">
+                    <h3>Retrato Corporativo</h3>
+                    <p>Sesión profesional para ejecutivo en entorno de oficina</p>
+                    <a href="#" class="btn btn-secondary view-image">Ver más</a>
+                </div>
+            </div>
+            <div class="portfolio-item" data-category="retratos">
+                <img src="https://images.unsplash.com/photo-1517365884913-3c33884b06fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Retrato artístico" loading="lazy">
+                <div class="portfolio-overlay">
+                    <h3>Retrato Artístico</h3>
+                    <p>Concepto creativo con iluminación dramática</p>
+                    <a href="#" class="btn btn-secondary view-image">Ver más</a>
+                </div>
+            </div>
             
             <!-- Bodas -->
-            <img class="bodas" src="https://images.unsplash.com/photo-1530047136935-7aadea69f43c" alt="Novios latinos en una boda tradicional" loading="lazy">
-            <img class="bodas" src="https://images.unsplash.com/photo-1519227356660-9b4fc208dcfc" alt="Novia latina con ramo de flores" loading="lazy">
-            <img class="bodas" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc" alt="Ceremonia de boda al aire libre" loading="lazy">
-            <img class="bodas" src="https://images.unsplash.com/photo-1519748771451-a94c5b4328a3" alt="Novios bailando en recepción" loading="lazy">
-            <img class="bodas" src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2ae" alt="Momento íntimo de novios" loading="lazy">
-            <img class="bodas" src="https://images.unsplash.com/photo-1519225422093-9d7b7c5b50e1" alt="Novios en campo al atardecer" loading="lazy">
-            <img class="bodas" src="https://images.unsplash.com/photo-1519748771451-a94c5b4328a3" alt="Boda con baile tradicional" loading="lazy">
-            <img class="bodas" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc" alt="Novios en abrazo romántico" loading="lazy">
-            <img class="bodas" src="https://images.unsplash.com/photo-1511593358241-7ddb3a6a3b6c" alt="Preparativos de boda latina" loading="lazy">
-            <img class="bodas" src="https://images.unsplash.com/photo-1508962914676-134910e7d73c" alt="Recepción de boda vibrante" loading="lazy">
+            <div class="portfolio-item" data-category="bodas">
+                <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Boda al atardecer" loading="lazy">
+                <div class="portfolio-overlay">
+                    <h3>Boda en la Playa</h3>
+                    <p>Ceremonia íntima al atardecer</p>
+                    <a href="#" class="btn btn-secondary view-image">Ver más</a>
+                </div>
+            </div>
+            <div class="portfolio-item" data-category="bodas">
+                <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Primer baile" loading="lazy">
+                <div class="portfolio-overlay">
+                    <h3>Primer Baile</h3>
+                    <p>Momento mágico capturado con luz natural</p>
+                    <a href="#" class="btn btn-secondary view-image">Ver más</a>
+                </div>
+            </div>
             
-            <!-- Parejas -->
-            <img class="parejas" src="https://images.unsplash.com/photo-1511216113906-8f57e6e99b33" alt="Pareja latina en atardecer" loading="lazy">
-            <img class="parejas" src="https://images.unsplash.com/photo-1513267040334-2c223ee3c0f5" alt="Pareja abrazándose en campo" loading="lazy">
-            <img class="parejas" src="https://images.unsplash.com/photo-1505840717430-8829f6c0e0e2" alt="Pareja en playa caribeña" loading="lazy">
-            <img class="parejas" src="https://images.unsplash.com/photo-1495567720989-cebdb147981e" alt="Pareja en momento romántico" loading="lazy">
-            <img class="parejas" src="https://images.unsplash.com/photo-1518894781321-630e638d0742" alt="Pareja en escenario urbano" loading="lazy">
-            <img class="parejas" src="https://images.unsplash.com/photo-1505832018823-2b8f9e13e0d2" alt="Pareja riendo en parque" loading="lazy">
-            <img class="parejas" src="https://images.unsplash.com/photo-1519748771451-a94c5b4328a3" alt="Pareja bailando salsa" loading="lazy">
-            <img class="parejas" src="https://images.unsplash.com/photo-1516728044592-2b0f14455e45" alt="Pareja en momento íntimo" loading="lazy">
-            <img class="parejas" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="Pareja en montaña" loading="lazy">
-            <img class="parejas" src="https://images.unsplash.com/photo-1512438248243-83b6f823a7d0" alt="Pareja en cascada" loading="lazy">
+            <!-- Paisajes -->
+            <div class="portfolio-item" data-category="paisajes">
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Paisaje montañoso" loading="lazy">
+                <div class="portfolio-overlay">
+                    <h3>Amanecer en las Montañas</h3>
+                    <p>Captura de larga exposición al amanecer</p>
+                    <a href="#" class="btn btn-secondary view-image">Ver más</a>
+                </div>
+            </div>
+            <div class="portfolio-item" data-category="paisajes">
+                <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Lago al atardecer" loading="lazy">
+                <div class="portfolio-overlay">
+                    <h3>Reflejos en el Lago</h3>
+                    <p>Composición simétrica con colores vibrantes</p>
+                    <a href="#" class="btn btn-secondary view-image">Ver más</a>
+                </div>
+            </div>
+            
+            <!-- Comercial -->
+            <div class="portfolio-item" data-category="comercial">
+                <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Fotografía de producto" loading="lazy">
+                <div class="portfolio-overlay">
+                    <h3>Fotografía de Producto</h3>
+                    <p>Iluminación profesional para catálogo</p>
+                    <a href="#" class="btn btn-secondary view-image">Ver más</a>
+                </div>
+            </div>
+            <div class="portfolio-item" data-category="comercial">
+                <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Fotografía gastronómica" loading="lazy">
+                <div class="portfolio-overlay">
+                    <h3>Gastronomía Profesional</h3>
+                    <p>Platillo gourmet capturado para menú</p>
+                    <a href="#" class="btn btn-secondary view-image">Ver más</a>
+                </div>
+            </div>
             
             <!-- Eventos -->
-            <img class="eventos" src="https://images.unsplash.com/photo-1509233725247-49e657c61113" alt="Festival cultural" loading="lazy">
-            <img class="eventos" src="https://images.unsplash.com/photo-1519748771451-a94c5b4328a3" alt="Concierto latino" loading="lazy">
-            <img class="eventos" src="https://images.unsplash.com/photo-1508962914676-134910e7d73c" alt="Celebración comunitaria" loading="lazy">
-            <img class="eventos" src="https://images.unsplash.com/photo-1516792288125-4a18f1263f86" alt="Fiesta tradicional" loading="lazy">
-            <img class="eventos" src="https://images.unsplash.com/photo-1516727003369-1c4b3a8c6ebb" alt="Desfile cultural" loading="lazy">
-            <img class="eventos" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="Evento benéfico" loading="lazy">
+            <div class="portfolio-item" data-category="eventos">
+                <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Concierto en vivo" loading="lazy">
+                <div class="portfolio-overlay">
+                    <h3>Concierto en Vivo</h3>
+                    <p>Captura de la energía del escenario</p>
+                    <a href="#" class="btn btn-secondary view-image">Ver más</a>
+                </div>
+            </div>
+            <div class="portfolio-item" data-category="eventos">
+                <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Conferencia corporativa" loading="lazy">
+                <div class="portfolio-overlay">
+                    <h3>Conferencia Corporativa</h3>
+                    <p>Cobertura profesional de evento empresarial</p>
+                    <a href="#" class="btn btn-secondary view-image">Ver más</a>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Testimonials Section -->
-    <section id="testimonials" class="section testimonials" role="region" aria-label="Testimonios de Clientes">
-        <h2>Testimonios</h2>
-        <div class="testimonial">
-            <p>"Marlon capturó nuestra boda con una pasión que refleja el espíritu latino. Cada foto es un tesoro lleno de amor."</p>
-            <h4>- Sofía y Juan, San José</h4>
+    <section id="testimonials" class="section">
+        <div class="section-title">
+            <h2>Testimonios</h2>
+            <p>Lo que mis clientes dicen sobre mi trabajo</p>
+            <div class="divider"></div>
         </div>
-        <div class="testimonial">
-            <p>"Mi retrato familiar es una obra maestra. Marlon entendió nuestra esencia y la plasmó perfectamente."</p>
-            <h4>- María G., Heredia</h4>
-        </div>
-        <div class="testimonial">
-            <p>"El curso de fotografía me inspiró a ver la belleza en lo cotidiano. ¡Una experiencia increíble!"</p>
-            <h4>- Andrés P., Limón</h4>
-        </div>
-        <div class="testimonial">
-            <p>"Nuestra sesión de pareja en la playa fue mágica. Marlon capturó nuestro amor con autenticidad."</p>
-            <h4>- Carla y Diego, Puntarenas</h4>
-        </div>
-        <div class="testimonial">
-            <p>"Las fotos de nuestro festival cultural son vibrantes y llenas de vida. Marlon es un artista."</p>
-            <h4>- Laura M., Alajuela</h4>
-        </div>
-        <div class="testimonial">
-            <p>"El profesionalismo de MarlonFotos hizo que nuestro evento corporativo luciera espectacular."</p>
-            <h4>- José R., Cartago</h4>
-        </div>
-        <div class="testimonial">
-            <p>"La sesión comercial para mi marca fue un éxito gracias a la creatividad de Marlon."</p>
-            <h4>- Ana T., San José</h4>
-        </div>
-        <div class="testimonial">
-            <p>"El documental sobre mi comunidad fue emotivo y auténtico, gracias a MarlonFotos."</p>
-            <h4>- Pedro L., Guanacaste</h4>
+        <div class="testimonials-slider">
+            <div class="testimonial-slide">
+                <div class="testimonial-quote">
+                    "Marlon capturó nuestra boda de manera increíble. Cada foto es un tesoro que revive las emociones de ese día especial. Su atención al detalle y capacidad para capturar momentos espontáneos es simplemente asombrosa."
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">
+                        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Laura Martínez">
+                    </div>
+                    <div class="author-info">
+                        <h4>Laura Martínez</h4>
+                        <p>Boda en la Playa</p>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-slide">
+                <div class="testimonial-quote">
+                    "Las fotos corporativas que Marlon tomó para nuestro equipo ejecutivo han elevado profesionalmente nuestra imagen de marca. Su capacidad para hacer que todos se sintieran cómodos frente a la cámara es notable."
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">
+                        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Carlos Rodríguez">
+                    </div>
+                    <div class="author-info">
+                        <h4>Carlos Rodríguez</h4>
+                        <p>CEO, TechSolutions</p>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-slide">
+                <div class="testimonial-quote">
+                    "Como influencer, necesito fotos que destaquen entre la multitud. Marlon tiene un ojo único para la composición y la iluminación. Mis fotos de perfil ahora reciben el doble de engagement gracias a su trabajo."
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Sofía Ramírez">
+                    </div>
+                    <div class="author-info">
+                        <h4>Sofía Ramírez</h4>
+                        <p>Influencer Digital</p>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-slide">
+                <div class="testimonial-quote">
+                    "Contraté a Marlon para fotografiar nuestro producto estrella y los resultados superaron todas nuestras expectativas. Las imágenes aumentaron nuestras conversiones en un 30%. Definitivamente volveremos a trabajar con él."
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-avatar">
+                        <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="David Fernández">
+                    </div>
+                    <div class="author-info">
+                        <h4>David Fernández</h4>
+                        <p>Director de Marketing</p>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Pricing Section -->
-    <section id="pricing" class="section pricing" role="region" aria-label="Precios de Servicios">
-        <h2>Precios</h2>
-        <p>Paquetes personalizados para capturar tus momentos más importantes. Contáctanos para más detalles.</p>
+    <section id="pricing" class="section">
+        <div class="section-title">
+            <h2>Paquetes y Precios</h2>
+            <p>Opciones adaptables a diferentes necesidades y presupuestos</p>
+            <div class="divider"></div>
+        </div>
         <div class="pricing-grid">
             <div class="pricing-card">
-                <h3>Sesión de Retratos</h3>
-                <p>1 hora, 20 fotos editadas, entrega digital, locación personalizada.</p>
-                <button onclick="window.location.href='#contact'">Reservar</button>
+                <div class="pricing-card-header">
+                    <h3>Sesión Básica</h3>
+                    <div class="pricing-price">$199 <span>/ sesión</span></div>
+                </div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i> 1 hora de sesión</li>
+                    <li><i class="fas fa-check"></i> 15 fotos editadas</li>
+                    <li><i class="fas fa-check"></i> 1 cambio de vestuario</li>
+                    <li><i class="fas fa-check"></i> Entrega digital</li>
+                    <li><i class="fas fa-check"></i> Tiempo de entrega: 1 semana</li>
+                </ul>
+                <div class="pricing-card-footer">
+                    <a href="#contact" class="btn btn-secondary">Reservar Ahora</a>
+                </div>
+            </div>
+            <div class="pricing-card popular">
+                <div class="pricing-card-header">
+                    <h3>Sesión Estándar</h3>
+                    <div class="pricing-price">$349 <span>/ sesión</span></div>
+                </div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i> 2 horas de sesión</li>
+                    <li><i class="fas fa-check"></i> 30 fotos editadas</li>
+                    <li><i class="fas fa-check"></i> 2-3 cambios de vestuario</li>
+                    <li><i class="fas fa-check"></i> 2 locaciones cercanas</li>
+                    <li><i class="fas fa-check"></i> Tiempo de entrega: 5 días</li>
+                </ul>
+                <div class="pricing-card-footer">
+                    <a href="#contact" class="btn btn-primary">Reservar Ahora</a>
+                </div>
             </div>
             <div class="pricing-card">
-                <h3>Fotografía de Bodas</h3>
-                <p>8 horas de cobertura, 100+ fotos editadas, álbum premium.</p>
-                <button onclick="window.location.href='#contact'">Reservar</button>
-            </div>
-            <div class="pricing-card">
-                <h3>Sesión de Parejas</h3>
-                <p>2 horas, 30 fotos editadas, locación natural o urbana.</p>
-                <button onclick="window.location.href='#contact'">Reservar</button>
-            </div>
-            <div class="pricing-card">
-                <h3>Paisajes</h3>
-                <p>2 horas en exteriores, 15 fotos editadas, alta resolución.</p>
-                <button onclick="window.location.href='#contact'">Reservar</button>
-            </div>
-            <div class="pricing-card">
-                <h3>Eventos</h3>
-                <p>4 horas de cobertura, 50+ fotos editadas, entrega digital.</p>
-                <button onclick="window.location.href='#contact'">Reservar</button>
-            </div>
-            <div class="pricing-card">
-                <h3>Comercial</h3>
-                <p>3 horas, 40 fotos editadas, optimizadas para redes y marketing.</p>
-                <button onclick="window.location.href='#contact'">Reservar</button>
-            </div>
-            <div class="pricing-card">
-                <h3>Documental</h3>
-                <p>6 horas, 80+ fotos editadas, narrativa personalizada.</p>
-                <button onclick="window.location.href='#contact'">Reservar</button>
+                <div class="pricing-card-header">
+                    <h3>Sesión Premium</h3>
+                    <div class="pricing-price">$599 <span>/ sesión</span></div>
+                </div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i> 4 horas de sesión</li>
+                    <li><i class="fas fa-check"></i> 50+ fotos editadas</li>
+                    <li><i class="fas fa-check"></i> Iluminación profesional</li>
+                    <li><i class="fas fa-check"></i> Múltiples locaciones</li>
+                    <li><i class="fas fa-check"></i> Tiempo de entrega: 3 días</li>
+                </ul>
+                <div class="pricing-card-footer">
+                    <a href="#contact" class="btn btn-secondary">Reservar Ahora</a>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Team Section -->
-    <section id="team" class="section team" role="region" aria-label="Nuestro Equipo">
-        <h2>Nuestro Equipo</h2>
-        <p>Un grupo apasionado por la fotografía, inspirado por la cultura latinoamericana.</p>
+    <section class="section">
+        <div class="section-title">
+            <h2>Mi Equipo</h2>
+            <p>Profesionales dedicados que hacen posible cada proyecto</p>
+            <div class="divider"></div>
+        </div>
         <div class="team-grid">
             <div class="team-member">
-                <img src="https://images.unsplash.com/photo-1516792288125-4a18f1263f86" alt="Marlon, fotógrafo principal" loading="lazy">
+                <div class="member-image">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Marlon Vargas" loading="lazy">
+                </div>
                 <h3>Marlon Vargas</h3>
-                <p>Fotógrafo principal con 15 años de experiencia capturando la esencia latina.</p>
+                <p>Fotógrafo Principal</p>
+                <p>Con 15 años de experiencia, Marlon lidera cada proyecto con creatividad y atención al detalle.</p>
+                <div class="member-social">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
             </div>
             <div class="team-member">
-                <img src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263" alt="Ana, asistente de fotografía" loading="lazy">
+                <div class="member-image">
+                    <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Ana Morales" loading="lazy">
+                </div>
                 <h3>Ana Morales</h3>
-                <p>Asistente y experta en iluminación, apasionada por retratos.</p>
+                <p>Asistente de Fotografía</p>
+                <p>Especialista en iluminación y dirección artística, Ana asegura que cada sesión sea perfecta.</p>
+                <div class="member-social">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
             </div>
             <div class="team-member">
-                <img src="https://images.unsplash.com/photo-1508962914676-134910e7d73c" alt="Carlos, editor de fotos" loading="lazy">
+                <div class="member-image">
+                    <img src="https://randomuser.me/api/portraits/men/68.jpg" alt="Carlos Gómez" loading="lazy">
+                </div>
                 <h3>Carlos Gómez</h3>
-                <p>Editor creativo, especializado en postproducción vibrante.</p>
+                <p>Editor Profesional</p>
+                <p>Con un ojo meticuloso para el detalle, Carlos da vida a cada imagen en postproducción.</p>
+                <div class="member-social">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
             </div>
             <div class="team-member">
-                <img src="https://images.unsplash.com/photo-1516727003369-1c4b3a8c6ebb" alt="Lucía, coordinadora" loading="lazy">
+                <div class="member-image">
+                    <img src="https://randomuser.me/api/portraits/women/22.jpg" alt="Lucía Pérez" loading="lazy">
+                </div>
                 <h3>Lucía Pérez</h3>
-                <p>Coordinadora de eventos, asegura que cada sesión sea perfecta.</p>
+                <p>Coordinadora de Eventos</p>
+                <p>Lucía gestiona cada detalle logístico para que las sesiones sean fluidas y sin estrés.</p>
+                <div class="member-social">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
             </div>
         </div>
-    </section>
-
-    <!-- Courses Section -->
-    <section id="courses" class="section courses" role="region" aria-label="Cursos de Fotografía">
-        <div class="courses-content">
-            <h2>Cursos de Fotografía</h2>
-            <img src="https://images.unsplash.com/photo-1523567830206-9673374e7f07" alt="Estudiantes latinos en curso" loading="lazy">
-            <p>En MarlonFotos, la fotografía es una celebración de la vida. Nuestros cursos te sumergen en el arte de capturar momentos, desde los vibrantes mercados de América Latina hasta los paisajes de ensueño. Aprende técnicas avanzadas de exposición, composición y edición, guiado por expertos apasionados por nuestra cultura. Perfecto para principiantes y profesionales que desean llevar sus habilidades al siguiente nivel.</p>
-            <form>
-                <input type="text" placeholder="Nombre" required aria-label="Nombre">
-                <input type="email" placeholder="Correo Electrónico" required aria-label="Correo Electrónico">
-                <textarea placeholder="¿Por qué quieres aprender fotografía?" rows="5" required aria-label="Motivación"></textarea>
-                <button type="submit">Inscribirme</button>
-            </form>
-            <p>Nuestros cursos incluyen módulos especiales como fotografía nocturna, edición en Lightroom y técnicas de fotografía documental, con sesiones prácticas en locaciones icónicas como el Parque Nacional Tortuguero.</p>
-        </div>
-    </section>
-
-    <!-- Client Gallery Section -->
-    <section id="client-gallery" class="section client-gallery" role="region" aria-label="Galería de Clientes">
-        <h2>Galería de Clientes</h2>
-        <p>Accede a tus fotos privadas con tu contraseña personalizada.</p>
-        <form>
-            <input type="text" placeholder="Nombre de la sesión" required aria-label="Nombre sesión">
-            <input type="password" placeholder="Contraseña" required aria-label="Contraseña">
-            <button type="submit">Acceder</button>
-        </form>
     </section>
 
     <!-- Blog Section -->
-    <section id="blog" class="section blog" role="region" aria-label="Blog de Fotografía">
-        <h2>Blog</h2>
-        <div class="blog-post">
-            <h3>Retratos: El Corazón Latino en Cada Imagen</h3>
-            <p>Crecí en los mercados de San José, donde cada rostro contaba una historia. Esa chispa me llevó a la fotografía de retrato, un arte que captura el alma. Usa un lente 85mm f/1.4 para un bokeh que resalte los ojos, y busca la luz natural para reflejar la calidez de nuestra gente.</p>
+    <section id="blog" class="section">
+        <div class="section-title">
+            <h2>Blog Fotográfico</h2>
+            <p>Consejos, tutoriales y reflexiones sobre el arte de la fotografía</p>
+            <div class="divider"></div>
         </div>
-        <div class="blog-post">
-            <h3>Paisajes: La Magia de Nuestra Tierra</h3>
-            <p>Los volcanes, selvas y playas de Costa Rica son mi inspiración. La fotografía de paisajes es como pintar con luz: espera la hora dorada y usa un trípode para largas exposiciones.</p>
-        </div>
-        <div class="blog-post">
-            <h3>Bodas: Celebrando el Amor Latino</h3>
-            <p>Mi primera boda fue una fiesta llena de salsa y risas, un recordatorio del amor que une a nuestras comunidades. Captura momentos espontáneos con un lente 50mm f/1.2.</p>
-        </div>
-        <div class="blog-post">
-            <h3>Parejas: El Ritmo del Amor</h3>
-            <p>El amor latino es pura pasión, como un baile al ritmo de la cumbia. Usa un lente 135mm f/1.8 para retratos íntimos y locaciones naturales para un ambiente relajado.</p>
-        </div>
-        <div class="blog-post">
-            <h3>Fotografía Nocturna: El Cielo Latino</h3>
-            <p>Las noches estrelladas sobre el Volcán Arenal me enseñaron la magia del cielo. Usa un trípode, ISO alto (1600-3200), y exposiciones largas (10-30 segundos).</p>
-        </div>
-        <div class="blog-post">
-            <h3>Eventos: El Pulso de la Fiesta</h3>
-            <p>Los festivales latinos, con su música y color, son un desafío emocionante. Usa un lente 70-200mm f/2.8 para capturar acción a distancia y un ISO alto.</p>
-        </div>
-        <div class="blog-post">
-            <h3>Fotografía de Calle: La Vida Latina</h3>
-            <p>Las calles de nuestras ciudades son un lienzo vivo: vendedores, músicos, niños jugando. Usa un lente 35mm f/1.8 para un look natural y mantente discreto.</p>
-        </div>
-        <div class="blog-post">
-            <h3>Fotografía de Naturaleza: El Alma de América Latina</h3>
-            <p>Desde los quetzales de Monteverde hasta las tortugas de Tortuguero, la naturaleza latina es pura magia. Usa un teleobjetivo como el 100-400mm.</p>
-        </div>
-        <div class="blog-post">
-            <h3>Edición en Lightroom: Mejora tu Estilo</h3>
-            <p>Aprende a usar curvas, ajustes de color y presets para realzar la vibración latina en tus fotos. La edición es clave para un acabado profesional.</p>
-        </div>
-        <div class="blog-post">
-            <h3>Composición: Reglas y Creatividad</h3>
-            <p>Domina la regla de los tercios, las líneas guía y el balance para crear imágenes impactantes inspiradas en la cultura latinoamericana.</p>
-        </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section id="faq" class="section faq" role="region" aria-label="Preguntas Frecuentes">
-        <h2>Preguntas Frecuentes</h2>
-        <div class="faq-item">
-            <h3>¿Cuánto tiempo tarda la entrega de fotos?</h3>
-            <p>Entregamos fotos editadas en 2-4 semanas, con vistas previas en 48 horas para bodas.</p>
-        </div>
-        <div class="faq-item">
-            <h3>¿Ofrecen sesiones en exteriores?</h3>
-            <p>Sí, trabajamos en locaciones como playas, selvas o ciudades para imágenes únicas.</p>
-        </div>
-        <div class="faq-item">
-            <h3>¿Qué incluye el curso de fotografía?</h3>
-            <p>Técnicas de exposición, composición, edición y práctica en el campo, adaptados a todos los niveles.</p>
-        </div>
-        <div class="faq-item">
-            <h3>¿Pueden fotografiar eventos culturales?</h3>
-            <p>Sí, capturamos festivales, conciertos y celebraciones con un enfoque dinámico.</p>
-        </div>
-        <div class="faq-item">
-            <h3>¿Ofrecen álbumes físicos?</h3>
-            <p>Sí, ofrecemos álbumes premium personalizados para bodas y sesiones especiales.</p>
-        </div>
-        <div class="faq-item">
-            <h3>¿Cómo accedo a mi galería privada?</h3>
-            <p>Usa el nombre de tu sesión y contraseña en la sección de Galería de Clientes.</p>
-        </div>
-        <div class="faq-item">
-            <h3>¿Puedo cancelar mi reserva?</h3>
-            <p>Sí, con 48 horas de aviso previo, sin costo adicional. Consulta los términos en contacto.</p>
-        </div>
-        <div class="faq-item">
-            <h3>¿Ofrecen servicios internacionales?</h3>
-            <p>Sí, viajamos a otros países de América Latina. Contáctanos para un presupuesto.</p>
+        <div class="blog-grid">
+            <div class="blog-card">
+                <div class="blog-image">
+                    <img src="https://images.unsplash.com/photo-1493863641943-9b68992a8d07?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Fotografía de retrato" loading="lazy">
+                    <div class="blog-date">15 JUL 2025</div>
+                </div>
+                <div class="blog-content">
+                    <span class="blog-category">Retratos</span>
+                    <h3>El Arte de Capturar la Esencia Humana</h3>
+                    <p>Explora técnicas profesionales para crear retratos que revelen la personalidad y emociones de tus sujetos, más allá de una simple fotografía.</p>
+                    <div class="blog-author">
+                        <div class="author-image">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Marlon Vargas">
+                        </div>
+                        <div class="author-details">
+                            <h4>Marlon Vargas</h4>
+                            <p>Fotógrafo Profesional</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="blog-card">
+                <div class="blog-image">
+                    <img src="https://images.unsplash.com/photo-1500534623283-312aade485b6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Fotografía de paisaje" loading="lazy">
+                    <div class="blog-date">10 JUL 2025</div>
+                </div>
+                <div class="blog-content">
+                    <span class="blog-category">Paisajes</span>
+                    <h3>Dominando la Fotografía de Amaneceres</h3>
+                    <p>Guía completa para capturar la magia de la hora dorada, desde configuración de cámara hasta técnicas de composición avanzadas.</p>
+                    <div class="blog-author">
+                        <div class="author-image">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Marlon Vargas">
+                        </div>
+                        <div class="author-details">
+                            <h4>Marlon Vargas</h4>
+                            <p>Fotógrafo Profesional</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="blog-card">
+                <div class="blog-image">
+                    <img src="https://images.unsplash.com/photo-1527525443983-6e60c75fff46?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Fotografía de boda" loading="lazy">
+                    <div class="blog-date">5 JUL 2025</div>
+                </div>
+                <div class="blog-content">
+                    <span class="blog-category">Bodas</span>
+                    <h3>10 Momentos Clave que Todo Fotógrafo de Bodas Debe Capturar</h3>
+                    <p>Descubre los momentos emocionales clave que hacen que los álbumes de bodas sean verdaderamente memorables y cómo anticiparte a ellos.</p>
+                    <div class="blog-author">
+                        <div class="author-image">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Marlon Vargas">
+                        </div>
+                        <div class="author-details">
+                            <h4>Marlon Vargas</h4>
+                            <p>Fotógrafo Profesional</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Social Feed Section -->
-    <section id="social" class="section social-feed" role="region" aria-label="Redes Sociales">
-        <h2>Síguenos en Instagram</h2>
-        <p>Conéctate con nosotros en @MarlonFotos para ver nuestro trabajo más reciente.</p>
-        <div class="social-grid">
-            <img src="https://images.unsplash.com/photo-1516792288125-4a18f1263f86" alt="Publicación: Mujer latina" loading="lazy">
-            <img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9" alt="Publicación: Selva tropical" loading="lazy">
-            <img src="https://images.unsplash.com/photo-1530047136935-7aadea69f43c" alt="Publicación: Boda latina" loading="lazy">
-            <img src="https://images.unsplash.com/photo-1511216113906-8f57e6e99b33" alt="Publicación: Pareja atardecer" loading="lazy">
-            <img src="https://images.unsplash.com/photo-1509233725247-49e657c61113" alt="Publicación: Festival cultural" loading="lazy">
-            <img src="https://images.unsplash.com/photo-1516727003369-1c4b3a8c6ebb" alt="Publicación: Retrato mulato" loading="lazy">
-        </div>
-    </section>
-
-    <!-- Newsletter Archive Section -->
-    <section id="newsletter" class="section newsletter-archive" role="region" aria-label="Archivo de Boletines">
-        <h2>Archivo de Boletines</h2>
-        <p>Explora nuestros consejos y actualizaciones pasadas.</p>
-        <div class="newsletter-item">
-            <h3>Enero 2025: Secretos de la Luz Natural</h3>
-            <p>Descubre cómo usar la hora dorada para retratos vibrantes.</p>
-        </div>
-        <div class="newsletter-item">
-            <h3>Febrero 2025: Fotografía de Bodas</h3>
-            <p>Consejos para capturar momentos espontáneos en tu gran día.</p>
-        </div>
-        <div class="newsletter-item">
-            <h3>Marzo 2025: Técnicas Nocturnas</h3>
-            <p>Aprende a fotografiar el cielo estrellado de América Latina.</p>
-        </div>
-        <div class="newsletter-item">
-            <h3>Abril 2025: Edición en Lightroom</h3>
-            <p>Técnicas para realzar tus fotos con ajustes de color y curvas.</p>
-        </div>
-    </section>
-
-    <!-- Photo Contest Section -->
-    <section id="contest" class="section photo-contest" role="region" aria-label="Concurso de Fotografía">
-        <h2>Concurso de Fotografía</h2>
-        <p>Envía tu mejor foto y participa por un taller gratuito con MarlonFotos.</p>
-        <form>
-            <input type="text" placeholder="Nombre" required aria-label="Nombre">
-            <input type="email" placeholder="Correo Electrónico" required aria-label="Correo">
-            <input type="file" accept="image/*" required aria-label="Subir foto">
-            <textarea placeholder="Describe tu foto" rows="5" required aria-label="Descripción"></textarea>
-            <button type="submit">Enviar</button>
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+        <h2>Suscríbete a Mi Newsletter</h2>
+        <p>Recibe consejos exclusivos, promociones especiales y actualizaciones sobre mis próximos talleres y proyectos.</p>
+        <form class="newsletter-form">
+            <input type="email" class="newsletter-input" placeholder="Tu correo electrónico" required>
+            <button type="submit" class="newsletter-btn">Suscribirse</button>
         </form>
     </section>
 
-    <!-- Events Section -->
-    <section id="events" class="section events" role="region" aria-label="Eventos Fotográficos">
-        <h2>Próximos Eventos</h2>
-        <p>Únete a nuestras actividades y talleres en vivo.</p>
-        <div class="event-card">
-            <h3>Taller de Paisajes - Agosto 2025</h3>
-            <p>Explora el Volcán Arenal con nosotros. Incluye equipo y guías. Fecha: 15-16 Agosto.</p>
-            <button onclick="window.location.href='#contact'">Inscribirse</button>
-        </div>
-        <div class="event-card">
-            <h3>Festival de Fotografía - Septiembre 2025</h3>
-            <p>Exhibición y charlas en San José. Fecha: 10-12 Septiembre.</p>
-            <button onclick="window.location.href='#contact'">Inscribirse</button>
-        </div>
-    </section>
-
-    <!-- Tutorials Section -->
-    <section id="tutorials" class="section tutorials" role="region" aria-label="Tutoriales">
-        <h2>Tutoriales</h2>
-        <div class="tutorial-card">
-            <h3>Cómo Usar un Trípode</h3>
-            <p>Aprende a estabilizar tus disparos para paisajes nocturnos con consejos prácticos.</p>
-            <button onclick="window.location.href='#contact'">Ver Tutorial</button>
-        </div>
-        <div class="tutorial-card">
-            <h3>Edición Básica en Photoshop</h3>
-            <p>Guía paso a paso para mejorar el contraste y los colores de tus fotos.</p>
-            <button onclick="window.location.href='#contact'">Ver Tutorial</button>
-        </div>
-    </section>
-
-    <!-- Awards Section -->
-    <section id="awards" class="section awards" role="region" aria-label="Premios y Reconocimientos">
-        <h2>Premios y Reconocimientos</h2>
-        <p>Orgullosos de nuestro trabajo reconocido a nivel regional.</p>
-        <div class="award-card">
-            <h3>Mejor Fotógrafo 2024 - Costa Rica</h3>
-            <p>Premio otorgado por la Asociación de Fotógrafos Latinoamericanos.</p>
-        </div>
-        <div class="award-card">
-            <h3>Excelencia en Retratos 2023</h3>
-            <p>Reconocimiento por el Festival Internacional de Fotografía.</p>
-        </div>
-    </section>
-
     <!-- Contact Section -->
-    <section id="contact" class="section contact" role="region" aria-label="Contacto">
-        <div class="contact-content">
-            <h2>Contáctanos</h2>
-            <p>Conecta con nosotros vía WhatsApp: <a href="https://wa.me/+50664380181" class="whatsapp" aria-label="Contactar por WhatsApp"><i class="fab fa-whatsapp"></i></a></p>
-            <div class="map">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3929.953!2d-84.081138!3d9.933123!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8fa0e3b1c6b7b7d7%3A0x3c4b5b6c8b9c7d2!2sSan%20Jos%C3%A9%2C%20Costa%20Rica!5e0!3m2!1ses!2scr!4v1697041234567" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" aria-label="Ubicación"></iframe>
+    <section id="contact" class="section">
+        <div class="section-title">
+            <h2>Contacto</h2>
+            <p>¿Listo para crear algo increíble juntos? Ponte en contacto</p>
+            <div class="divider"></div>
+        </div>
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3>Información de Contacto</h3>
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="info-content">
+                        <h4>Ubicación</h4>
+                        <p>San José, Costa Rica</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="info-content">
+                        <h4>Correo Electrónico</h4>
+                        <a href="mailto:hola@marlonfotos.com">hola@marlonfotos.com</a>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="info-content">
+                        <h4>Teléfono</h4>
+                        <a href="tel:+50664380181">+506 6438 0181</a>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="info-content">
+                        <h4>Horario</h4>
+                        <p>Lunes a Viernes: 9am - 6pm<br>Sábados: 10am - 2pm</p>
+                    </div>
+                </div>
+                <div class="contact-social">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
             </div>
-            <form>
-                <input type="text" placeholder="Nombre" required aria-label="Nombre">
-                <input type="email" placeholder="Correo Electrónico" required aria-label="Correo">
-                <textarea placeholder="Mensaje" rows="5" required aria-label="Mensaje"></textarea>
-                <button type="submit">Enviar</button>
-            </form>
+            <div class="contact-form">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Nombre completo" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" placeholder="Correo electrónico" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Asunto">
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" placeholder="Tu mensaje" required></textarea>
+                    </div>
+                    <button type="submit" class="form-submit">Enviar Mensaje</button>
+                </form>
+                <div class="contact-map">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3929.953!2d-84.081138!3d9.933123!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8fa0e3b1c6b7b7d7%3A0x3c4b5b6c8b9c7d2!2sSan%20Jos%C3%A9%2C%20Costa%20Rica!5e0!3m2!1ses!2scr!4v1697041234567" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer role="contentinfo">
-        <p>© 2025 MarlonFotos. Todos los derechos reservados. Imágenes de stock de <a href="https://unsplash.com" target="_blank">Unsplash</a>. 
-        <a href="https://wa.me/+50664380181" class="whatsapp" aria-label="Contactar por WhatsApp"><i class="fab fa-whatsapp"></i></a></p>
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>MarlonFotos</h3>
+                <p>Fotografía profesional que captura momentos y crea arte visual. Especializado en retratos, bodas, paisajes y fotografía comercial.</p>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h3>Servicios</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Fotografía de Retratos</a></li>
+                    <li><a href="#">Fotografía de Bodas</a></li>
+                    <li><a href="#">Fotografía de Paisajes</a></li>
+                    <li><a href="#">Fotografía Comercial</a></li>
+                    <li><a href="#">Fotografía de Eventos</a></li>
+                    <li><a href="#">Talleres de Fotografía</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Enlaces Rápidos</h3>
+                <ul class="footer-links">
+                    <li><a href="#home">Inicio</a></li>
+                    <li><a href="#about">Sobre Mí</a></li>
+                    <li><a href="#services">Servicios</a></li>
+                    <li><a href="#portfolio">Portafolio</a></li>
+                    <li><a href="#testimonials">Testimonios</a></li>
+                    <li><a href="#contact">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Contacto</h3>
+                <ul class="footer-links">
+                    <li><a href="tel:+50664380181">+506 6438 0181</a></li>
+                    <li><a href="mailto:hola@marlonfotos.com">hola@marlonfotos.com</a></li>
+                    <li>San José, Costa Rica</li>
+                    <li>Lunes a Viernes: 9am - 6pm</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 MarlonFotos. Todos los derechos reservados. Diseñado con <i class="fas fa-heart" style="color: var(--accent);"></i> por Marlon Vargas</p>
+        </div>
     </footer>
 
     <!-- WhatsApp Floating Button -->
-    <div class="whatsapp-float">
-        <a href="https://wa.me/+50664380181" aria-label="Contactar por WhatsApp"><i class="fab fa-whatsapp"></i></a>
-    </div>
+    <a href="https://wa.me/+50664380181" class="whatsapp-float" aria-label="Contactar por WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
     <!-- Back to Top Button -->
-    <button class="back-to-top" aria-label="Volver al inicio"><i class="fas fa-arrow-up"></i></button>
-
-    <!-- Zoom Modal -->
-    <div class="modal" id="zoomModal" role="dialog" aria-label="Imagen ampliada">
-        <span class="close" aria-label="Cerrar">×</span>
-        <span class="prev" aria-label="Imagen anterior">❮</span>
-        <span class="next" aria-label="Imagen siguiente">❯</span>
-        <img id="zoomedImage" src="" alt="Imagen ampliada">
-        <div class="modal-thumbnails" id="modal-thumbnails"></div>
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
     </div>
 
-    <!-- GSAP and ScrollTrigger -->
+    <!-- Image Modal -->
+    <div class="modal" id="imageModal">
+        <span class="modal-close">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="Imagen ampliada">
+            <div class="modal-nav">
+                <button id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+                <button id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="modal-thumbnails" id="modalThumbnails"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
     <script>
-        // Preloader and Hero Animation
-        window.addEventListener('load', () => {
-            const preloader = document.getElementById('preloader');
-            gsap.to(preloader, {
-                opacity: 0,
-                duration: 1,
-                onComplete: () => {
-                    preloader.style.display = 'none';
-                    // Simplified Hero Fade-In
-                    gsap.from(".hero-content", {
-                        duration: 1.5,
-                        opacity: 0,
-                        ease: "power2.out"
+        // Preloader
+        window.addEventListener('load', function() {
+            // Simulate loading progress
+            let progress = 0;
+            const progressBar = document.querySelector('.preloader-progress');
+            const interval = setInterval(function() {
+                progress += Math.random() * 10;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                }
+                progressBar.style.width = progress + '%';
+            }, 100);
+
+            // Hide preloader when fully loaded
+            setTimeout(function() {
+                const preloader = document.getElementById('preloader');
+                gsap.to(preloader, {
+                    opacity: 0,
+                    duration: 0.5,
+                    onComplete: function() {
+                        preloader.style.display = 'none';
+                    }
+                });
+            }, 2000);
+        });
+
+        // Mobile Navigation
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        hamburger.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            hamburger.innerHTML = navMenu.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                navMenu.classList.remove('active');
+                hamburger.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+
+        // Smooth Scrolling for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
                     });
-                    gsap.from(".hero-content h1", { duration: 1, opacity: 0, delay: 0.5, ease: "power2.out" });
-                    gsap.from(".hero-content p", { duration: 1, opacity: 0, delay: 0.8, ease: "power2.out" });
-                    gsap.from(".hero-content button", { duration: 1, opacity: 0, delay: 1.1, ease: "power2.out" });
                 }
             });
         });
 
-        // Theme Toggle
-        const themeToggle = document.querySelector('.theme-toggle');
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('light-mode');
-            themeToggle.innerHTML = document.body.classList.contains('light-mode') ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-        });
-
-        // Simplified Parallax Backgrounds
-        gsap.utils.toArray(".section").forEach(section => {
-            if (section.classList.contains("hero") || section.classList.contains("about") || 
-                section.classList.contains("courses") || section.classList.contains("contact")) {
-                gsap.to(section, {
-                    backgroundPositionY: "20%",
-                    scrollTrigger: {
-                        trigger: section,
-                        scrub: true
-                    }
-                });
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
             }
-        });
-
-        // Mobile Navigation
-        const hamburger = document.querySelector('.hamburger');
-        const navUl = document.querySelector('nav ul');
-        hamburger.addEventListener('click', () => {
-            navUl.classList.toggle('active');
         });
 
         // Back to Top Button
-        const backToTop = document.querySelector('.back-to-top');
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                backToTop.style.display = 'block';
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('active');
             } else {
-                backToTop.style.display = 'none';
+                backToTop.classList.remove('active');
             }
         });
-        backToTop.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        backToTop.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         });
 
-        // Gallery Filter
-        const filterButtons = document.querySelectorAll('.gallery-filters button');
-        const galleryImages = document.querySelectorAll('.gallery-grid img');
+        // Portfolio Filter
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+
         filterButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const filter = button.getAttribute('data-filter');
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
                 filterButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
+                // Add active class to clicked button
+                this.classList.add('active');
                 
-                galleryImages.forEach(image => {
-                    if (filter === 'all' || image.classList.contains(filter)) {
-                        image.style.display = 'block';
+                const filterValue = this.getAttribute('data-filter');
+                
+                portfolioItems.forEach(item => {
+                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                        item.style.display = 'block';
                     } else {
-                        image.style.display = 'none';
+                        item.style.display = 'none';
                     }
                 });
             });
         });
 
         // Image Modal
-        const modal = document.getElementById('zoomModal');
-        const modalImg = document.getElementById('zoomedImage');
-        const closeBtn = document.querySelector('.close');
-        const prevBtn = document.querySelector('.prev');
-        const nextBtn = document.querySelector('.next');
-        const thumbnails = document.getElementById('modal-thumbnails');
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalThumbnails = document.getElementById('modalThumbnails');
+        const closeBtn = document.querySelector('.modal-close');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const viewButtons = document.querySelectorAll('.view-image');
+
         let currentIndex = 0;
         let images = [];
+        let currentCategory = 'all';
 
-        // Initialize modal with all gallery images
-        galleryImages.forEach((img, index) => {
-            images.push(img.src);
-            img.addEventListener('click', () => {
+        // Initialize modal with all portfolio images
+        portfolioItems.forEach((item, index) => {
+            const imgSrc = item.querySelector('img').src;
+            images.push({
+                src: imgSrc,
+                category: item.getAttribute('data-category')
+            });
+            
+            viewButtons[index].addEventListener('click', function(e) {
+                e.preventDefault();
                 currentIndex = index;
-                modal.style.display = 'flex';
-                modalImg.src = img.src;
-                updateThumbnails();
+                currentCategory = portfolioItems[index].getAttribute('data-category');
+                openModal();
             });
         });
 
+        function openModal() {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            updateModalImage();
+            updateThumbnails();
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function updateModalImage() {
+            modalImg.src = images[currentIndex].src;
+        }
+
         function updateThumbnails() {
-            thumbnails.innerHTML = '';
-            images.forEach((img, index) => {
-                const thumb = document.createElement('img');
-                thumb.src = img;
-                thumb.classList.toggle('active', index === currentIndex);
-                thumb.addEventListener('click', () => {
-                    currentIndex = index;
-                    modalImg.src = img;
+            modalThumbnails.innerHTML = '';
+            
+            // Filter images by current category
+            const filteredImages = images.filter(img => 
+                currentCategory === 'all' || img.category === currentCategory
+            );
+            
+            filteredImages.forEach((img, index) => {
+                const thumb = document.createElement('div');
+                thumb.className = 'modal-thumbnail';
+                if (images[currentIndex].src === img.src) {
+                    thumb.classList.add('active');
+                }
+                
+                thumb.innerHTML = `<img src="${img.src}" alt="Thumbnail ${index + 1}">`;
+                
+                thumb.addEventListener('click', function() {
+                    // Find the original index of this image
+                    const originalIndex = images.findIndex(i => i.src === img.src);
+                    currentIndex = originalIndex;
+                    updateModalImage();
                     updateThumbnails();
                 });
-                thumbnails.appendChild(thumb);
+                
+                modalThumbnails.appendChild(thumb);
             });
         }
 
-        closeBtn.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-
-        prevBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + images.length) % images.length;
-            modalImg.src = images[currentIndex];
+        function navigateModal(direction) {
+            // Filter images by current category
+            const filteredImages = images.filter(img => 
+                currentCategory === 'all' || img.category === currentCategory
+            );
+            
+            // Find current index in filtered array
+            const filteredIndex = filteredImages.findIndex(img => 
+                img.src === images[currentIndex].src
+            );
+            
+            let newFilteredIndex;
+            if (direction === 'prev') {
+                newFilteredIndex = (filteredIndex - 1 + filteredImages.length) % filteredImages.length;
+            } else {
+                newFilteredIndex = (filteredIndex + 1) % filteredImages.length;
+            }
+            
+            // Find original index of the new image
+            const newImageSrc = filteredImages[newFilteredIndex].src;
+            currentIndex = images.findIndex(img => img.src === newImageSrc);
+            
+            updateModalImage();
             updateThumbnails();
-        });
+        }
 
-        nextBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex + 1) % images.length;
-            modalImg.src = images[currentIndex];
-            updateThumbnails();
-        });
+        closeBtn.addEventListener('click', closeModal);
+        prevBtn.addEventListener('click', () => navigateModal('prev'));
+        nextBtn.addEventListener('click', () => navigateModal('next'));
 
-        // Close modal when clicking outside
-        modal.addEventListener('click', (e) => {
+        modal.addEventListener('click', function(e) {
             if (e.target === modal) {
-                modal.style.display = 'none';
+                closeModal();
             }
         });
 
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
+        // Testimonials Slider
+        $('.testimonials-slider').slick({
+            dots: true,
+            infinite: true,
+            speed: 500,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            autoplay: true,
+            autoplaySpeed: 5000,
+            arrows: false,
+            adaptiveHeight: true
         });
 
-        // Initialize ScrollTrigger
+        // GSAP Animations
         gsap.registerPlugin(ScrollTrigger);
 
-        // Animate sections on scroll
-        gsap.utils.toArray('.section').forEach(section => {
-            gsap.from(section, {
+        // Hero Animation
+        gsap.from(".hero h1", {
+            duration: 1,
+            opacity: 0,
+            y: 50,
+            ease: "power3.out",
+            delay: 0.5
+        });
+
+        gsap.from(".hero p", {
+            duration: 1,
+            opacity: 0,
+            y: 50,
+            ease: "power3.out",
+            delay: 0.8
+        });
+
+        gsap.from(".hero-buttons", {
+            duration: 1,
+            opacity: 0,
+            y: 50,
+            ease: "power3.out",
+            delay: 1.1,
+            onComplete: function() {
+                gsap.to(".scroll-down", {
+                    opacity: 1,
+                    duration: 0.5
+                });
+            }
+        });
+
+        // Section Title Animations
+        gsap.utils.toArray(".section-title h2").forEach(title => {
+            gsap.from(title, {
+                scrollTrigger: {
+                    trigger: title,
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                },
                 opacity: 0,
                 y: 50,
-                duration: 1,
-                scrollTrigger: {
-                    trigger: section,
-                    start: 'top 80%',
-                    toggleActions: 'play none none none'
-                }
+                duration: 0.8,
+                ease: "power3.out"
             });
         });
+
+        gsap.utils.toArray(".section-title p").forEach(text => {
+            gsap.from(text, {
+                scrollTrigger: {
+                    trigger: text,
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                },
+                opacity: 0,
+                y: 50,
+                duration: 0.8,
+                ease: "power3.out",
+                delay: 0.2
+            });
+        });
+
+        gsap.utils.toArray(".section-title .divider").forEach(divider => {
+            gsap.from(divider, {
+                scrollTrigger: {
+                    trigger: divider,
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                },
+                scaleX: 0,
+                duration: 1,
+                ease: "power3.out",
+                delay: 0.4
+            });
+        });
+
+        // About Section Animation
+        gsap.from(".about-image", {
+            scrollTrigger: {
+                trigger: ".about-content",
+                start: "top 70%",
+                toggleActions: "play none none none"
+            },
+            opacity: 0,
+            x: -100,
+            duration: 1,
+            ease: "power3.out"
+        });
+
+        gsap.from(".about-text", {
+            scrollTrigger: {
+                trigger: ".about-content",
+                start: "top 70%",
+                toggleActions: "play none none none"
+            },
+            opacity: 0,
+            x: 100,
+            duration: 1,
+            ease: "power3.out"
+        });
+
+        // Service Cards Animation
+        gsap.utils.toArray(".service-card").forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                },
+                opacity: 0,
+                y: 50,
+                duration: 0.8,
+                ease: "power3.out",
+                delay: i * 0.1
+            });
+        });
+
+        // Portfolio Items Animation
+        gsap.utils.toArray(".portfolio-item").forEach((item, i) => {
+            gsap.from(item, {
+                scrollTrigger: {
+                    trigger: item,
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                },
+                opacity: 0,
+                y: 50,
+                duration: 0.8,
+                ease: "power3.out",
+                delay: i % 3 * 0.1
+            });
+        });
+
+        // Testimonials Animation
+        gsap.from(".testimonials-slider", {
+            scrollTrigger: {
+                trigger: ".testimonials-slider",
+                start: "top 70%",
+                toggleActions: "play none none none"
+            },
+            opacity: 0,
+            y: 50,
+            duration: 1,
+            ease: "power3.out"
+        });
+
+        // Pricing Cards Animation
+        gsap.utils.toArray(".pricing-card").forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                },
+                opacity: 0,
+                y: 50,
+                duration: 0.8,
+                ease: "power3.out",
+                delay: i * 0.1
+            });
+        });
+
+        // Team Members Animation
+        gsap.utils.toArray(".team-member").forEach((member, i) => {
+            gsap.from(member, {
+                scrollTrigger: {
+                    trigger: member,
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                },
+                opacity: 0,
+                y: 50,
+                duration: 0.8,
+                ease: "power3.out",
+                delay: i * 0.1
+            });
+        });
+
+        // Blog Cards Animation
+        gsap.utils.toArray(".blog-card").forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                },
+                opacity: 0,
+                y: 50,
+                duration: 0.8,
+                ease: "power3.out",
+                delay: i % 3 * 0.1
+            });
+        });
+
+        // Contact Section Animation
+        gsap.from(".contact-info", {
+            scrollTrigger: {
+                trigger: ".contact-container",
+                start: "top 70%",
+                toggleActions: "play none none none"
+            },
+            opacity: 0,
+            x: -100,
+            duration: 1,
+            ease: "power3.out"
+        });
+
+        gsap.from(".contact-form", {
+            scrollTrigger: {
+                trigger: ".contact-container",
+                start: "top 70%",
+                toggleActions: "play none none none"
+            },
+            opacity: 0,
+            x: 100,
+            duration: 1,
+            ease: "power3.out"
+        });
+
+        // Footer Animation
+        gsap.from(".footer-container", {
+            scrollTrigger: {
+                trigger: ".footer",
+                start: "top 70%",
+                toggleActions: "play none none none"
+            },
+            opacity: 0,
+            y: 50,
+            duration: 1,
+            ease: "power3.out"
+        });
+
+        // Parallax Effects
+        gsap.to(".hero-content", {
+            scrollTrigger: {
+                trigger: ".hero",
+                start: "top top",
+                end: "bottom top",
+                scrub: true
+            },
+            y: 100,
+            ease: "none"
+        });
+
+        // Floating Elements Animation
+        const floatingElements = document.querySelectorAll('.floating');
+        floatingElements.forEach(el => {
+            gsap.to(el, {
+                y: 20,
+                duration: 3,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut"
+            });
+        });
+
+        // Pulse Elements Animation
+        const pulseElements = document.querySelectorAll('.pulse');
+        pulseElements.forEach(el => {
+            gsap.to(el, {
+                scale: 1.1,
+                duration: 2,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut"
+            });
+        });
+
+        // Form Submission
+        const contactForm = document.getElementById('contactForm');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Here you would typically send the form data to a server
+                alert('Gracias por tu mensaje. Me pondré en contacto contigo pronto.');
+                contactForm.reset();
+            });
+        }
+
+        // Newsletter Form Submission
+        const newsletterForm = document.querySelector('.newsletter-form');
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const emailInput = this.querySelector('input[type="email"]');
+                alert(`Gracias por suscribirte con el correo: ${emailInput.value}`);
+                emailInput.value = '';
+            });
+        }
     </script>
 </body>
 </html>
